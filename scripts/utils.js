@@ -1,5 +1,13 @@
+import {
+    canvas,
+    CELL_HEIGHT,
+    CELL_WIDTH,
+    GRID_ROW_START_POS,
+    GRID_COL_START_POS,
+} from "./constants.js";
+
 // Initializes the game grid
-const initializeGrid = () => {
+export const initializeGrid = (Cell) => {
     let gridsList = [];
     for (
         let row = GRID_ROW_START_POS;
@@ -24,7 +32,7 @@ const initializeGrid = () => {
  * @param {Object} obj2
  * @returns {Boolean}
  */
-const isCollided = (obj1, obj2) => {
+export const isCollided = (obj1, obj2) => {
     if (
         obj1.x > obj2.x + obj2.w || // Obj1 is far right than obj2
         obj1.x + obj1.w < obj2.x || // Obj1 is far left than obj2

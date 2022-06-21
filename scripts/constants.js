@@ -34,3 +34,18 @@ const mouseStatus = {
 // Images
 const bg = new Image();
 bg.src = "./assets/images/interface/background1.jpg";
+
+// Export all the constants
+export {
+    canvas,
+    ctx,
+    CELL_WIDTH,
+    CELL_HEIGHT,
+    CELL_PAD,
+    GRID_ROW_START_POS,
+    GRID_COL_START_POS,
+    colSize,
+    mouseStatus,
+    bg,
+    canvasPosition,
+};

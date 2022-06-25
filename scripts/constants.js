@@ -6,15 +6,13 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1100;
 canvas.height = 600;
 
-// Get's canvas position in the dom
-const canvasPosition = canvas.getBoundingClientRect();
-
 // Required Variables
 const CELL_WIDTH = 90;
 const CELL_HEIGHT = 100;
 const CELL_PAD = 4;
 const GRID_COL_START_POS = 270;
 const GRID_ROW_START_POS = 82;
+const PROJECTILES = [];
 
 // Size of a single column
 const colSize = {
@@ -31,6 +29,14 @@ const mouseStatus = {
     clicked: false,
 };
 
+// Game state
+const gameState = {
+    current: 0,
+    gameReady: 0,
+    gamePlaying: 1,
+    gameOver: 2,
+};
+
 // Images
 const bg = new Image();
 bg.src = "./assets/images/interface/background1.jpg";
@@ -44,8 +50,9 @@ export {
     CELL_PAD,
     GRID_ROW_START_POS,
     GRID_COL_START_POS,
+    PROJECTILES,
     colSize,
     mouseStatus,
+    gameState,
     bg,
-    canvasPosition,
 };

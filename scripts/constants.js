@@ -3,15 +3,16 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
 // Assigns width and height to the canvas
-canvas.width = 1100;
-canvas.height = 600;
+
+canvas.width = 1898;
+canvas.height = 970;
 
 // Required Variables
-const CELL_WIDTH = 90;
-const CELL_HEIGHT = 100;
+const CELL_WIDTH = 140;
+const CELL_HEIGHT = 155;
 const CELL_PAD = 4;
-const GRID_COL_START_POS = 270;
-const GRID_ROW_START_POS = 82;
+const GRID_COL_START_POS = 455;
+const GRID_ROW_START_POS = 140;
 const PROJECTILES = [];
 
 // Size of a single column

@@ -11,12 +11,12 @@ export const initializeGrid = (Cell) => {
     let gridsList = [];
     for (
         let row = GRID_ROW_START_POS;
-        row < canvas.height - 100;
+        row < canvas.height - CELL_HEIGHT;
         row += CELL_HEIGHT
     ) {
         for (
             let col = GRID_COL_START_POS;
-            col < canvas.width - 100;
+            col < canvas.width - CELL_WIDTH * 2;
             col += CELL_WIDTH
         ) {
             gridsList.push(new Cell(col, row, CELL_WIDTH, CELL_HEIGHT));

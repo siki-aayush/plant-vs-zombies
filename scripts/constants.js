@@ -40,7 +40,20 @@ const gameState = {
 
 // Images
 const bg = new Image();
+export const PeaShooterCard = new Image();
+export const RepeaterCard = new Image();
+export const ThreePeaShooterCard = new Image();
+export const ChomperCard = new Image();
+export const PotatoMinesCard = new Image();
+export const WallNutCard = new Image();
+
 bg.src = "./assets/images/interface/background1.jpg";
+PeaShooterCard.src = "../assets/images/Card/Plants/Peashooter.png";
+RepeaterCard.src = "../assets/images/Card/Plants/Repeater.png";
+ThreePeaShooterCard.src = "../assets/images/Card/Plants/Threepeater.png";
+ChomperCard.src = "../assets/images/Card/Plants/Chomper.png";
+PotatoMinesCard.src = "../assets/images/Card/Plants/PotatoMine.png";
+WallNutCard.src = "../assets/images/Card/Plants/WallNut.png";
 
 // Export all the constants
 export {

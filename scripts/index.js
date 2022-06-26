@@ -1,6 +1,6 @@
-import Cell from "./classes/Cell.js";
 import Plant, {
     Chomper,
+    MelonPult,
     PeaShooter,
     PotatoMines,
     Repeater,
@@ -8,10 +8,6 @@ import Plant, {
     ThreePeaShooter,
     WallNut,
 } from "./classes/Plant.js";
-import Sun from "./classes/Sun.js";
-import Zombie from "./classes/Zombie.js";
-
-import { initializeGrid, isCollided } from "./utils.js";
 import {
     canvas,
     ctx,
@@ -23,20 +19,69 @@ import {
     GRID_ROW_START_POS,
     gameState,
     CELL_PAD,
+    PeaShooterCard,
+    ThreePeaShooterCard,
+    RepeaterCard,
+    ChomperCard,
+    WallNutCard,
+    PotatoMinesCard,
 } from "./constants.js";
+import Cell from "./classes/Cell.js";
+import Sun from "./classes/Sun.js";
+import Zombie, {
+    BucketHeadZombie,
+    ConeHeadZombie,
+    NormalZombie,
+} from "./classes/Zombie.js";
+import { initializeGrid, isCollided } from "./utils.js";
 
 class Game {
     constructor() {
         this.canvasPosition = canvas.getBoundingClientRect();
         this.grids = [];
-        this.plants = [];
         this.zombies = [];
         this.suns = [];
         this.projectiles = [];
         this.sunCounts = 200;
         this.zombiesSpawnRate = 200;
         this.zombiesPositions = [];
+        this.selectedPlant = 0;
         this.frames = 0;
+        this.plants = [];
+
+        this.zombiesTypes = [
+            BucketHeadZombie,
+            ConeHeadZombie,
+            NormalZombie,
+            Zombie,
+        ];
+
+        this.plantsTypes = [
+            {
+                card: PeaShooterCard,
+                blueprint: PeaShooter,
+            },
+            {
+                card: RepeaterCard,
+                blueprint: Repeater,
+            },
+            {
+                card: ThreePeaShooterCard,
+                blueprint: ThreePeaShooter,
+            },
+            {
+                card: ChomperCard,
+                blueprint: Chomper,
+            },
+            {
+                card: WallNutCard,
+                blueprint: WallNut,
+            },
+            {
+                card: PotatoMinesCard,
+                blueprint: PotatoMines,
+            },
+        ];
     }
 
     adddListeners() {
@@ -56,8 +101,16 @@ class Game {
             mouseStatus.y = 0;
         });
 
+        canvas.addEventListener("mousedown", () => {
+            mouseStatus.clicked = true;
+        });
+
+        canvas.addEventListener("mouseup", () => {
+            mouseStatus.clicked = false;
+        });
+
         // Adds click listener on canvas
-        canvas.addEventListener("click", () => {
+        canvas.addEventListener("click", (e) => {
             let cellPosX;
             let cellPosY;
             let plantCost = 25;
@@ -74,6 +127,8 @@ class Game {
 
             // Stops from placing the plants outside of the grid
             if (
+                cellPosX === undefined ||
+                cellPosY === undefined ||
                 cellPosX < GRID_COL_START_POS ||
                 cellPosY < GRID_ROW_START_POS
             ) {
@@ -90,16 +145,15 @@ class Game {
                 }
             }
 
-            //console.log("clicked", plantCost, this.sunCounts);
             //If the user has required number of sun then the plant is placed at the selected cell position
             if (plantCost <= this.sunCounts) {
                 this.plants.push(
-                    new Spikeweed(
+                    new this.plantsTypes[this.selectedPlant].blueprint(
                         this,
                         cellPosX,
                         cellPosY,
-                        CELL_WIDTH,
-                        CELL_HEIGHT
+                        CELL_WIDTH - 25,
+                        CELL_HEIGHT - 25
                     )
                 );
 
@@ -117,35 +171,9 @@ class Game {
 
     // Draws the plants
     manageAllPlants() {
+        console.log("plants", this.plants);
         this.plants.forEach((plant) => {
             plant.update();
-            // Shoot bullets
-            //plant.attack();
-
-            //// Plants start attacking if if the zombies are in the same row
-            //if (this.zombiesPositions.indexOf(plant.y) !== -1) {
-            //    plant.attacking = true;
-            //} else {
-            //    plant.attacking = false;
-            //}
-
-            //// Checks collision and decreases the plant health on collision and stop the movement of zombies
-            //// If the plant health is below zero move the zombies again
-            //this.zombies.forEach((zombie) => {
-            //    if (isCollided(plant, zombie)) {
-            //        plant.health -= 0.2;
-            //        zombie.increment = 0;
-            //    }
-            //});
-
-            //// If the plant dies all the zombies stopped by the plant starts moving again
-            //if (plant.health <= 0) {
-            //    this.zombies.forEach((zombie) => {
-            //        if (isCollided(plant, zombie)) {
-            //            zombie.increment = zombie.velocity;
-            //        }
-            //    });
-            //}
         });
 
         // Removes plants whose health are below 0
@@ -168,15 +196,16 @@ class Game {
                 zombie.delete = true;
             }
         });
-        let selectedRow = CELL_HEIGHT + GRID_ROW_START_POS + CELL_PAD;
+        //let selectedRow = CELL_HEIGHT + GRID_ROW_START_POS + CELL_PAD;
 
-        //let selectedRow =
-        //    Math.floor(Math.random() * 5) * CELL_HEIGHT +
-        //    GRID_ROW_START_POS +
-        //    CELL_PAD;
+        let selectedRow =
+            Math.floor(Math.random() * 5) * CELL_HEIGHT +
+            GRID_ROW_START_POS +
+            CELL_PAD;
         if (this.frames % this.zombiesSpawnRate === 0) {
+            let choice = Math.floor(Math.random() * this.zombiesTypes.length);
             this.zombies.push(
-                new Zombie(
+                new this.zombiesTypes[choice](
                     this,
                     canvas.width,
                     selectedRow,
@@ -250,11 +279,46 @@ class Game {
         }
     }
 
+    choosePlants() {
+        if (isCollided(mouse)) {
+        }
+    }
+
+    showCards() {
+        this.plantsTypes.forEach((plant, idx) => {
+            let cardBoundary = {
+                x: 20,
+                y: GRID_ROW_START_POS + 80 * idx,
+                w: 100,
+                h: 60,
+            };
+            let cardY = GRID_ROW_START_POS + 80 * idx;
+            ctx.drawImage(
+                plant.card,
+                0,
+                0,
+                cardBoundary.w,
+                cardBoundary.h,
+                cardBoundary.x,
+                cardY,
+                idx === this.selectedPlant
+                    ? cardBoundary.w + 15
+                    : cardBoundary.w,
+                idx === this.selectedPlant ? cardBoundary.h + 8 : cardBoundary.h
+            );
+
+            if (isCollided(mouseStatus, cardBoundary) && mouseStatus.clicked) {
+                this.selectedPlant = idx;
+            }
+        });
+    }
+
     // Creates an animation loop
     animate = () => {
         ctx.fillStyle = "black";
-        ctx.drawImage(bg, 0, 0, 1540, 600);
+        //ctx.drawImage(bg, 0, 0, 1540, 600);
         //ctx.fillRect(0, 0, colSize.width, colSize.height);
+        ctx.drawImage(bg, 0, 0, canvas.width + 573, canvas.height);
         this.drawGrid();
 
         // Manages the objects in the game
@@ -265,6 +329,7 @@ class Game {
 
         this.showResources();
         this.cleanOrphanObjects();
+        this.showCards();
 
         // Increases frame by 1 on every loop (used as a timer)
         this.frames++;

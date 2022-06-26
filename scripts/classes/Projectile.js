@@ -12,16 +12,16 @@ export default class Projectile {
         this.y = y;
         this.w = w;
         this.h = h;
-        this.damage = 10;
-        this.speed = 2;
+        this.damage = 3;
+        this.speed = 3;
         this.delete = false;
+
+        this.bullet = new Image();
+        this.bullet.src = "../../assets/images/Plants/PB00.gif";
     }
 
     draw() {
-        ctx.fillStyle = "white";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.w, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.drawImage(this.bullet, this.x, this.y, this.w, this.h);
     }
 
     update() {
@@ -108,9 +108,9 @@ export class ParabolicProjectile extends Projectile {
         this.theta += this.d_theta;
         this.x += this.speed;
         this.y = this.temp - Math.sin((this.theta * Math.PI) / 180) * 120;
-        if (this.theta > 180) {
-            console.log(this.theta);
-        }
+        //if (this.theta > 180) {
+        //    console.log(this.theta);
+        //}
         this.draw();
     }
 

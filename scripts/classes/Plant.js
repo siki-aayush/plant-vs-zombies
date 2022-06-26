@@ -4,7 +4,6 @@ import Projectile, {
     TopProjectile,
 } from "./Projectile.js";
 import {
-    PROJECTILES,
     CELL_PAD,
     CELL_WIDTH,
     CELL_HEIGHT,
@@ -46,6 +45,7 @@ export default class Plant {
             if (isCollided(this, zombie)) {
                 this.health -= 0.2;
                 zombie.increment = 0;
+                zombie.attacking = true;
             }
         });
     }
@@ -67,6 +67,8 @@ export default class Plant {
             this.game.zombies.forEach((zombie) => {
                 if (isCollided(this, zombie)) {
                     zombie.increment = zombie.velocity;
+                    zombie.attacking = false;
+                    zombie.initZombieAnimation();
                 }
             });
         }
@@ -79,7 +81,7 @@ export class PeaShooter extends Plant {
             this.cooldown++;
             if (this.cooldown % 100 === 0) {
                 this.game.projectiles.push(
-                    new ParabolicProjectile(
+                    new PeaShooter(
                         this.game,
                         this.x + CELL_WIDTH / 2,
                         this.y + CELL_HEIGHT / 2,
@@ -170,14 +172,16 @@ export class ThreePeaShooter extends Plant {
                     );
                 }
 
-                this.game.projectiles.push(
-                    new BottomProjectile(
-                        this.x + CELL_WIDTH / 2,
-                        this.y + CELL_HEIGHT / 2,
-                        10,
-                        10
-                    )
-                );
+                if (!(this.y + CELL_HEIGHT) >= GRID_ROW_START_POS) {
+                    this.game.projectiles.push(
+                        new BottomProjectile(
+                            this.x + CELL_WIDTH / 2,
+                            this.y + CELL_HEIGHT / 2,
+                            10,
+                            10
+                        )
+                    );
+                }
             }
         } else {
             this.cooldown = 0;
@@ -206,6 +210,8 @@ export class ThreePeaShooter extends Plant {
             this.game.zombies.forEach((zombie) => {
                 if (isCollided(this, zombie)) {
                     zombie.increment = zombie.velocity;
+                    zombie.attacking = false;
+                    zombie.initZombieAnimation();
                 }
             });
         }
@@ -225,7 +231,6 @@ export class Chomper extends Plant {
                     this.cooldown = true;
                     setTimeout(() => {
                         this.cooldown = false;
-                        console.log("cool down ended");
                     }, 8000);
                     return false;
                 }
@@ -267,6 +272,22 @@ export class Spikeweed extends Plant {
     }
 
     attack() {
+        this.draw();
+    }
+}
+
+export class MelonPult extends Plant {
+    attack() {
+        if (this.attacking) {
+            this.cooldown++;
+            if (this.cooldown % 100 === 0) {
+                this.game.projectiles.push(
+                    new ParabolicProjectile(this.game, this.x, this.y, 15, 15)
+                );
+            }
+        } else {
+            this.cooldown = 0;
+        }
         this.draw();
     }
 }

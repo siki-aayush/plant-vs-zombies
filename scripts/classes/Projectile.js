@@ -64,26 +64,37 @@ export class ParabolicProjectile extends Projectile {
         this.game = game;
         this.temp = y;
         this.initialFrame = this.game.frames;
-        this.getTarget();
 
         this.theta = 0;
         this.futureTime = 90;
-        this.futureZombiePos = this.target.x - 0.5 * this.futureTime;
-        this.targetDist = this.futureZombiePos - this.x;
-        this.speed = this.targetDist / this.futureTime;
-        this.d_theta = 180 / this.futureTime;
 
-        console.log(this.d_theta, this.initialFrame, this.futureZombiePos);
+        this.getTarget();
 
-        //this.speed = this.targetDist / 3000;
+        if (this.target.attacking !== true) {
+            this.futureZombiePos =
+                this.target.x - this.target.velocity * this.futureTime;
+            this.targetDist = this.futureZombiePos - this.x;
+            this.speed = this.targetDist / this.futureTime;
+            this.d_theta = 180 / this.futureTime;
+        } else {
+            this.targetDist = this.target.x - this.x;
+            this.speed = this.targetDist / 90;
+            this.d_theta = 180 / 90;
+        }
+
+        if (this.targetDist <= 0) {
+            this.speed = 1;
+            this.d_theta = 1;
+        }
     }
 
     getTarget() {
         this.game.zombies.every((zombie) => {
             if (
                 this.y >= zombie.y &&
-                this.y <= zombie.y + CELL_HEIGHT &&
-                zombie.x - 0.5 * 300 > this.x + 50
+                this.y <= zombie.y + CELL_HEIGHT
+                //&&
+                //zombie.x - zombie.velocity * this.futureTime > this.x + 50
             ) {
                 this.target = zombie;
                 return false;
@@ -96,7 +107,7 @@ export class ParabolicProjectile extends Projectile {
         this.futureTime--;
         this.theta += this.d_theta;
         this.x += this.speed;
-        this.y = this.temp - Math.sin((this.theta * Math.PI) / 180) * 110;
+        this.y = this.temp - Math.sin((this.theta * Math.PI) / 180) * 120;
         if (this.theta > 180) {
             console.log(this.theta);
         }

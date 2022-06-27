@@ -41,7 +41,7 @@ export default class Plant {
         this.bulletW = 60;
         this.bulletH = 40;
 
-        // Zombie status
+        // Plant status
         this.attacking = false;
         this.cooldown = false;
     }
@@ -188,6 +188,33 @@ export class PeaShooter extends Plant {
 }
 
 export class Repeater extends Plant {
+    initPlantAnimation() {
+        // Animation support variables
+        this.startFrameX = 0;
+        this.startFrameY = 0;
+        this.endFrameX = 2;
+        this.endFrameY = 2;
+        this.minFrame = 0;
+        this.maxFrame = 10;
+        this.frameX = this.startFrameX;
+        this.frameY = this.startFrameY;
+        this.spriteW = 73;
+        this.spriteH = 71;
+        this.animationSpeed = 3;
+
+        // Offset for drawing image
+        this.offsetX = -15;
+        this.offsety = -15;
+        this.offsetW = -15;
+        this.offsetH = -15;
+    }
+
+    // Loads the sprite of the zombie
+    loadSprite() {
+        this.plantType = new Image();
+        this.plantType.src = "../../assets/images/RepeaterSprite_73x71.png";
+    }
+
     attack() {
         // Denotes the plant is ready to attack and
         // is waiting for the right animation frame of attack
@@ -201,11 +228,12 @@ export class Repeater extends Plant {
             this.frameX === 3 &&
             this.frameY === 1
         ) {
+            this.attackNow = false;
             this.game.projectiles.push(
                 new Projectile(
                     this.game,
-                    this.x + CELL_WIDTH / 2 + 40,
-                    this.y + CELL_HEIGHT / 2,
+                    this.x + CELL_WIDTH / 2,
+                    this.y + 24,
                     this.bulletW,
                     this.bulletH
                 )
@@ -213,8 +241,8 @@ export class Repeater extends Plant {
             this.game.projectiles.push(
                 new Projectile(
                     this.game,
-                    this.x + CELL_WIDTH / 2,
-                    this.y + CELL_HEIGHT / 2,
+                    this.x + CELL_WIDTH / 2 + this.bulletW,
+                    this.y + 24,
                     this.bulletW,
                     this.bulletH
                 )
@@ -505,13 +533,65 @@ export class WallNut extends Plant {
 }
 
 export class PotatoMines extends Plant {
+    initPlantAnimation() {
+        // Animation support variables
+        this.startFrameX = 0;
+        this.startFrameY = 0;
+        this.endFrameX = 10;
+        this.endFrameY = 0;
+        this.minFrame = 0;
+        this.maxFrame = 10;
+        this.frameX = this.startFrameX;
+        this.frameY = this.startFrameY;
+        this.spriteW = 132;
+        this.spriteH = 93;
+        this.animationSpeed = 4;
+
+        // Offset for drawing image
+        this.offsetX = 0;
+        this.offsety = -75;
+        this.offsetW = 100;
+        this.offsetH = 0;
+    }
+
+    // Loads the sprite of the zombie
+    loadSprite() {
+        this.plantType = new Image();
+        this.plantType.src = "../../assets/images/PotatoMineSprite_132x93.png";
+    }
+
     attack() {
-        this.game.zombies.forEach((zombie) => {
+        let collided = false;
+
+        // Chekcs if any zombies are collided with the mine
+        this.game.zombies.every((zombie) => {
             if (isCollided(this, zombie) && zombie.x + zombie.w > this.x) {
                 zombie.delete = true;
                 this.health = 0;
+                collided = true;
+                return false;
             }
+            return true;
         });
+
+        // If collided then all the zombies with one lane apart will also be killed
+        if (collided) {
+            this.game.zombies.forEach((zombie) => {
+                if (
+                    isCollided(
+                        {
+                            x: this.x,
+                            y: this.y - CELL_HEIGHT, // Above lane
+                            w: this.w + CELL_WIDTH, // Front lane
+                            h: this.h + CELL_HEIGHT * 2, // Below lane
+                        },
+                        zombie
+                    )
+                ) {
+                    zombie.delete = true;
+                }
+            });
+        }
         this.draw();
     }
 }

@@ -6,7 +6,8 @@ export default class Sun {
         this.x = x;
         this.y = startPos;
         this.finalYPos = y;
-        this.w = CELL_WIDTH * 0.5;
+
+        this.w = CELL_WIDTH * 0.6;
         this.h = CELL_HEIGHT * 0.5;
         this.value = 25;
         this.delete = false;

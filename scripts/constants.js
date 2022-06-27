@@ -46,6 +46,10 @@ export const ThreePeaShooterCard = new Image();
 export const ChomperCard = new Image();
 export const PotatoMinesCard = new Image();
 export const WallNutCard = new Image();
+export const MelonPultCard = new Image();
+export const SpikeweedCard = new Image();
+export const sunImg = new Image();
+export const resourcescard = new Image();
 
 bg.src = "./assets/images/interface/background1.jpg";
 PeaShooterCard.src = "../assets/images/Card/Plants/Peashooter.png";
@@ -54,6 +58,10 @@ ThreePeaShooterCard.src = "../assets/images/Card/Plants/Threepeater.png";
 ChomperCard.src = "../assets/images/Card/Plants/Chomper.png";
 PotatoMinesCard.src = "../assets/images/Card/Plants/PotatoMine.png";
 WallNutCard.src = "../assets/images/Card/Plants/WallNut.png";
+SpikeweedCard.src = "../assets/images/Card/Plants/Spikeweed.png";
+MelonPultCard.src = "../assets/images/Card/Plants/Melonpult_melon.webp";
+sunImg.src = "../assets/images/SunSprite_79x79.png";
+resourcescard.src = "../assets/images/interface/SunBack.png";
 
 // Export all the constants
 export {

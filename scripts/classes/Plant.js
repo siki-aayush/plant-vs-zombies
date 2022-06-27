@@ -43,7 +43,7 @@ export default class Plant {
 
         // Zombie status
         this.attacking = false;
-        this.cooldown = 0;
+        this.cooldown = false;
     }
 
     // Initializes all the variables required for animation
@@ -175,6 +175,7 @@ export class PeaShooter extends Plant {
             this.attackNow = false;
             this.game.projectiles.push(
                 new Projectile(
+                    this.game,
                     this.x + CELL_WIDTH / 2,
                     this.y + 19,
                     this.bulletW,
@@ -202,6 +203,7 @@ export class Repeater extends Plant {
         ) {
             this.game.projectiles.push(
                 new Projectile(
+                    this.game,
                     this.x + CELL_WIDTH / 2 + 40,
                     this.y + CELL_HEIGHT / 2,
                     this.bulletW,
@@ -210,6 +212,7 @@ export class Repeater extends Plant {
             );
             this.game.projectiles.push(
                 new Projectile(
+                    this.game,
                     this.x + CELL_WIDTH / 2,
                     this.y + CELL_HEIGHT / 2,
                     this.bulletW,
@@ -228,6 +231,7 @@ export class snowPea extends Plant {
             if (this.cooldown % 100 === 0) {
                 this.game.projectiles.push(
                     new Projectile(
+                        this.game,
                         this.x + CELL_WIDTH / 2,
                         this.y + CELL_HEIGHT / 2,
                         this.bulletW,
@@ -285,6 +289,7 @@ export class ThreePeaShooter extends Plant {
             // Middle projectile
             this.game.projectiles.push(
                 new Projectile(
+                    this.game,
                     this.x + CELL_WIDTH / 2 + 28,
                     this.y + 28,
                     this.bulletW,
@@ -296,6 +301,7 @@ export class ThreePeaShooter extends Plant {
             if (!(this.y - CELL_HEIGHT <= GRID_ROW_START_POS)) {
                 this.game.projectiles.push(
                     new TopProjectile(
+                        this.game,
                         this.x + CELL_WIDTH / 2 + 28,
                         this.y + 28,
                         this.bulletW,
@@ -312,6 +318,7 @@ export class ThreePeaShooter extends Plant {
                 console.log("inside");
                 this.game.projectiles.push(
                     new BottomProjectile(
+                        this.game,
                         this.x + CELL_WIDTH / 2 + 28,
                         this.y + 28,
                         this.bulletW,
@@ -354,21 +361,90 @@ export class ThreePeaShooter extends Plant {
 }
 
 export class Chomper extends Plant {
+    initPlantAnimation() {
+        // Animation support variables
+        this.startFrameX = 0;
+        this.startFrameY = 0;
+        this.endFrameX = 2;
+        this.endFrameY = 2;
+        this.minFrame = 0;
+        this.maxFrame = 10;
+        this.frameX = this.startFrameX;
+        this.frameY = this.startFrameY;
+        this.spriteW = 130;
+        this.spriteH = 114;
+        this.animationSpeed = 5;
+
+        // Offset for drawing image
+        this.offsetX = 0;
+        this.offsety = 30;
+        this.offsetW = 50;
+        this.offsetH = 50;
+    }
+
+    // Loads the sprite of the zombie
+    loadSprite() {
+        this.plantType = new Image();
+        this.plantType.src = "../../assets/images/ChomperSprite_130x114.png";
+    }
+
+    updateAnimation() {
+        if (this.attackNow) {
+            // If attacking show attack animation
+            this.startFrameX = 3;
+            this.startFrameY = 2;
+            this.endFrameX = 5;
+            this.endFrameY = 4;
+
+            // Stop the attacking mode after the animation is finished
+            this.attackNow = false;
+        } else if (this.cooldown) {
+            // If in cooldown shows the digesting animation
+            this.startFrameX = 6;
+            this.startFrameY = 4;
+            this.endFrameX = 10;
+            this.endFrameY = 5;
+        } else if (!this.attackNow && !this.cooldown) {
+            // Shows idle animation if neither are true
+            this.startFrameX = 0;
+            this.startFrameY = 0;
+            this.endFrameX = 2;
+            this.endFrameY = 2;
+        }
+    }
+
     attack() {
         if (this.attacking && !this.cooldown) {
             this.game.zombies.every((zombie) => {
                 if (
                     zombie.y === this.y &&
-                    zombie.x - (this.x + this.w) <= CELL_WIDTH &&
+                    zombie.x - (this.x + this.w) <= CELL_WIDTH - 50 &&
                     zombie.x - (this.x + this.w) >= -CELL_WIDTH
                 ) {
-                    zombie.delete = true;
+                    // Set the attacking mode true
+                    this.attackNow = true;
                     this.cooldown = true;
+
+                    // Set the frame on attacking animation frame
+                    this.frameX = 9;
+                    this.frameY = 2;
+
+                    // Eat the zombie
+                    zombie.delete = true;
+
+                    // Give a cooldown of 10 sec before it can eat again and
+                    // reset the animation frame
                     setTimeout(() => {
                         this.cooldown = false;
-                    }, 8000);
+                        this.frameX = 0;
+                        this.frameY = 0;
+                    }, 10000);
+
+                    // stop the loop
                     return false;
                 }
+
+                // continue the loop
                 return true;
             });
         }
@@ -408,6 +484,7 @@ export class WallNut extends Plant {
         this.plantType.src = "../../assets/images/WallNutSprite_65x73.png";
     }
 
+    // Updates the animation
     updateAnimation() {
         if (this.health < 300) {
             this.startFrameX = 1;
@@ -423,7 +500,6 @@ export class WallNut extends Plant {
     }
 
     attack() {
-        console.log(this.offsetW, this.offsetH);
         this.draw();
     }
 }

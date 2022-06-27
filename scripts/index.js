@@ -25,6 +25,9 @@ import {
     ChomperCard,
     WallNutCard,
     PotatoMinesCard,
+    resourcescard,
+    MelonPultCard,
+    SpikeweedCard,
 } from "./constants.js";
 import Cell from "./classes/Cell.js";
 import Sun from "./classes/Sun.js";
@@ -80,6 +83,14 @@ class Game {
             {
                 card: PotatoMinesCard,
                 blueprint: PotatoMines,
+            },
+            {
+                card: SpikeweedCard,
+                blueprint: Spikeweed,
+            },
+            {
+                card: MelonPultCard,
+                blueprint: MelonPult,
             },
         ];
     }
@@ -171,7 +182,6 @@ class Game {
 
     // Draws the plants
     manageAllPlants() {
-        console.log("plants", this.plants);
         this.plants.forEach((plant) => {
             plant.update();
         });
@@ -224,17 +234,17 @@ class Game {
             // Update projectile positionsl
             projectile.update();
 
-            this.zombies.every((zombie) => {
-                if (isCollided(projectile, zombie)) {
-                    zombie.health -= projectile.damage;
-                    projectile.delete = true;
-                    return false;
-                }
-                return true;
-            });
-            if (projectile > canvas.width - CELL_WIDTH) {
-                projectile.delete = true;
-            }
+            //this.zombies.every((zombie) => {
+            //    if (isCollided(projectile, zombie)) {
+            //        zombie.health -= projectile.damage;
+            //        projectile.delete = true;
+            //        return false;
+            //    }
+            //    return true;
+            //});
+            //if (projectile > canvas.width - CELL_WIDTH) {
+            //    projectile.delete = true;
+            //}
         });
     }
 
@@ -244,7 +254,7 @@ class Game {
                 Math.random() * (canvas.width - CELL_WIDTH) +
                 GRID_COL_START_POS;
             let y = Math.random() * 5 * CELL_HEIGHT + GRID_ROW_START_POS;
-            this.suns.push(new Sun(x, y, 0));
+            this.suns.push(new Sun(this, x, y, 0));
         }
 
         this.suns.forEach((sun) => {
@@ -271,17 +281,13 @@ class Game {
     }
 
     showResources() {
+        ctx.drawImage(resourcescard, 20, 15, 145, 45);
         ctx.fillStyle = "black";
         ctx.font = "30px Arial";
-        ctx.fillText("Sun: " + this.sunCounts, 0, 30);
         if (gameState.current === gameState.gameOver) {
             ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
         }
-    }
-
-    choosePlants() {
-        if (isCollided(mouse)) {
-        }
+        ctx.fillText(this.sunCounts, 79, 48);
     }
 
     showCards() {
@@ -325,9 +331,9 @@ class Game {
         this.manageAllPlants();
         this.manageAllZombies();
         this.manageAllProjectiles();
+        this.showResources();
         this.manageSuns();
 
-        this.showResources();
         this.cleanOrphanObjects();
         this.showCards();
 

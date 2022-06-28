@@ -5,6 +5,7 @@ import Plant, {
     PotatoMines,
     Repeater,
     Spikeweed,
+    Sunflower,
     ThreePeaShooter,
     WallNut,
 } from "./classes/Plant.js";
@@ -28,6 +29,7 @@ import {
     resourcescard,
     MelonPultCard,
     SpikeweedCard,
+    SunflowerCard,
 } from "./constants.js";
 import Cell from "./classes/Cell.js";
 import Sun from "./classes/Sun.js";
@@ -60,6 +62,10 @@ class Game {
         ];
 
         this.plantsTypes = [
+            {
+                card: SunflowerCard,
+                blueprint: Sunflower,
+            },
             {
                 card: PeaShooterCard,
                 blueprint: PeaShooter,

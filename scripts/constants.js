@@ -40,6 +40,7 @@ const gameState = {
 
 // Images
 const bg = new Image();
+export const SunflowerCard = new Image();
 export const PeaShooterCard = new Image();
 export const RepeaterCard = new Image();
 export const ThreePeaShooterCard = new Image();
@@ -52,6 +53,7 @@ export const sunImg = new Image();
 export const resourcescard = new Image();
 
 bg.src = "./assets/images/interface/background1.jpg";
+SunflowerCard.src = "../assets/images/Card/Plants/SunFlower.png";
 PeaShooterCard.src = "../assets/images/Card/Plants/Peashooter.png";
 RepeaterCard.src = "../assets/images/Card/Plants/Repeater.png";
 ThreePeaShooterCard.src = "../assets/images/Card/Plants/Threepeater.png";

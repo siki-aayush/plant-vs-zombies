@@ -227,11 +227,14 @@ class Game {
 
             if (zombie.health <= 0) {
                 // Delete the dead zombies from attacking row lists
-                let attackRowIdx = this.zombiesPositions.indexOf(zombie.y);
-                this.zombiesPositions.splice(attackRowIdx, 1);
+                //let attackRowIdx = this.zombiesPositions.indexOf(zombie.y);
+                //this.zombiesPositions.splice(attackRowIdx, 1);
 
                 // sets the zombie as orphan to be deleted during clearing process
-                zombie.delete = true;
+                //zombie.delete = true;
+
+                zombie.die = true;
+                zombie.attacking = false;
             }
         });
         //let selectedRow = CELL_HEIGHT + GRID_ROW_START_POS + CELL_PAD;
@@ -359,8 +362,6 @@ class Game {
 
         // Increases frame by 1 on every loop (used as a timer)
         this.frames++;
-
-        console.log(this.suns);
 
         // If the game is over it stops the animationFrame
         if (gameState.current !== gameState.gameOver)

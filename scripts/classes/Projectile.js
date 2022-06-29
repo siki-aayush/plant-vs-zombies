@@ -15,7 +15,7 @@ export default class Projectile {
         this.y = y;
         this.w = w;
         this.h = h;
-        this.damage = 3;
+        this.damage = 10;
         this.speed = 3;
         this.delete = false;
 
@@ -35,6 +35,7 @@ export default class Projectile {
         this.game.zombies.every((zombie) => {
             if (isCollided(this, zombie)) {
                 zombie.health -= this.damage;
+                zombie.hit = true;
                 this.delete = true;
                 return false;
             }
@@ -102,15 +103,14 @@ export class ParabolicProjectile extends Projectile {
                 this.targetDist = this.futureZombiePos - this.x;
                 this.speed = this.targetDist / this.futureTime;
                 this.d_theta = 180 / this.futureTime;
-            } else {
+            } else if (this.target.attacking === true) {
                 this.targetDist = this.target.x - this.x;
-                this.speed = this.targetDist / 90;
-                this.d_theta = 180 / 90;
+                this.speed = this.targetDist / 20;
+                this.d_theta = 180 / 20;
             }
         }
         if (!this.target || this.targetDist <= 0) {
-            this.speed = 1;
-            this.d_theta = 1;
+            this.delete = true;
         }
     }
 
@@ -123,9 +123,7 @@ export class ParabolicProjectile extends Projectile {
         this.game.zombies.every((zombie) => {
             if (
                 this.y >= zombie.y &&
-                this.y <= zombie.y + CELL_HEIGHT
-                //&&
-                //zombie.x - zombie.velocity * this.futureTime > this.x + 50
+                this.y <= zombie.y + (CELL_HEIGHT - 100)
             ) {
                 this.target = zombie;
                 return false;
@@ -138,6 +136,7 @@ export class ParabolicProjectile extends Projectile {
         this.game.zombies.every((zombie) => {
             if (this.temp === zombie.y && isCollided(this, zombie)) {
                 zombie.health -= this.damage;
+                zombie.hit = true;
                 this.delete = true;
                 return false;
             }
@@ -150,7 +149,7 @@ export class ParabolicProjectile extends Projectile {
     }
 
     update() {
-        this.futureTime--;
+        //this.futureTime--;
         this.theta += this.d_theta;
         this.x += this.speed;
         this.y =
@@ -160,9 +159,9 @@ export class ParabolicProjectile extends Projectile {
         if (this.theta > 180) {
             this.delete = true;
         } else {
-            this.draw();
             this.checkCollision();
         }
+        this.draw();
     }
 
     draw() {

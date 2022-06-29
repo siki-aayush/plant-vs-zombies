@@ -23,6 +23,8 @@ export default class Zombie {
         this.y = y;
         this.w = w - CELL_PAD * 2;
         this.h = h - CELL_PAD * 2;
+        this.die = false;
+        this.hit = false;
 
         this.initZombieSpecs();
         this.initZombieAnimation();
@@ -33,7 +35,7 @@ export default class Zombie {
     initZombieSpecs() {
         // Movement variables
         //this.velocity = Math.random() * 0.8 + 0.4;
-        this.velocity = 3;
+        this.velocity = 2;
         this.increment = this.velocity;
 
         // Life
@@ -73,6 +75,9 @@ export default class Zombie {
 
     // Draws the zombie
     draw() {
+        if (this.hit) {
+            ctx.globalAlpha = 0.6;
+        }
         ctx.drawImage(
             this.zombieType,
             this.frameX * this.spriteW,
@@ -84,13 +89,48 @@ export default class Zombie {
             this.w + this.offsetX,
             this.h + this.offsety
         );
+        if (this.hit) {
+            ctx.globalAlpha = 1;
+            setTimeout(() => {
+                this.hit = false;
+            }, 100);
+        }
     }
 
     attackAnimation() {
+        console.log("attacking started");
         this.startFrameX = 8;
         this.startFrameY = 2;
         this.endFrameX = 10;
         this.endFrameY = 5;
+    }
+
+    removeZombies() {
+        if (this.frameX === this.endFrameX && this.frameY === this.endFrameY) {
+            let attackRowIdx = this.game.zombiesPositions.indexOf(this.y);
+            this.game.zombiesPositions.splice(attackRowIdx, 1);
+            this.delete = true;
+        }
+    }
+
+    checkFrames() {
+        if (this.frameY < this.startFrameY) {
+            this.frameX = this.startFrameX;
+            this.frameY = this.startFrameY;
+        } else if (
+            this.frameY === this.startFrameY &&
+            this.frameX < this.startFrameX
+        ) {
+            this.frameX = this.startFrameX;
+        }
+    }
+
+    dieAnimation() {
+        this.startFrameX = 3;
+        this.startFrameY = 9;
+        this.endFrameX = 9;
+        this.endFrameY = 10;
+        this.increment = 0;
     }
 
     loopAnimation() {
@@ -121,6 +161,13 @@ export default class Zombie {
         if (this.attacking) {
             this.attackAnimation();
         }
+
+        if (this.die) {
+            this.dieAnimation();
+            this.checkFrames();
+            this.removeZombies();
+        }
+
         this.loopAnimation();
         this.draw(ctx);
     }
@@ -169,6 +216,14 @@ export class NormalZombie extends Zombie {
         this.startFrameY = 4;
         this.endFrameX = 9;
         this.endFrameY = 7;
+    }
+
+    dieAnimation() {
+        this.startFrameX = 10;
+        this.startFrameY = 7;
+        this.endFrameX = 4;
+        this.endFrameY = 11;
+        this.increment = 0;
     }
 }
 

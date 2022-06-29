@@ -153,7 +153,9 @@ export class ParabolicProjectile extends Projectile {
         this.futureTime--;
         this.theta += this.d_theta;
         this.x += this.speed;
-        this.y = this.temp - Math.sin((this.theta * Math.PI) / 180) * 120;
+        this.y =
+            this.temp -
+            Math.sin((this.theta * Math.PI) / 180) * this.targetDist * 0.2;
 
         if (this.theta > 180) {
             this.delete = true;

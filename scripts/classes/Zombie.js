@@ -32,7 +32,8 @@ export default class Zombie {
     // Initialilzes all the features of zombie
     initZombieSpecs() {
         // Movement variables
-        this.velocity = Math.random() * 0.8 + 0.4;
+        //this.velocity = Math.random() * 0.8 + 0.4;
+        this.velocity = 3;
         this.increment = this.velocity;
 
         // Life

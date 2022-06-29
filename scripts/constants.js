@@ -13,6 +13,7 @@ const CELL_HEIGHT = 155;
 const CELL_PAD = 4;
 const GRID_COL_START_POS = 455;
 const GRID_ROW_START_POS = 140;
+export const LAWN_CLEANER_WIDTH = 80;
 const PROJECTILES = [];
 
 // Size of a single column
@@ -49,8 +50,10 @@ export const PotatoMinesCard = new Image();
 export const WallNutCard = new Image();
 export const MelonPultCard = new Image();
 export const SpikeweedCard = new Image();
+
 export const sunImg = new Image();
 export const resourcescard = new Image();
+export const LawnCleanerImg = new Image();
 
 bg.src = "./assets/images/interface/background1.jpg";
 SunflowerCard.src = "../assets/images/Card/Plants/SunFlower.png";
@@ -62,8 +65,10 @@ PotatoMinesCard.src = "../assets/images/Card/Plants/PotatoMine.png";
 WallNutCard.src = "../assets/images/Card/Plants/WallNut.png";
 SpikeweedCard.src = "../assets/images/Card/Plants/Spikeweed.png";
 MelonPultCard.src = "../assets/images/Card/Plants/Melonpult_melon.webp";
+
 sunImg.src = "../assets/images/SunSprite_79x79.png";
 resourcescard.src = "../assets/images/interface/SunBack.png";
+LawnCleanerImg.src = "../assets/images/interface/LawnCleaner.png";
 
 // Export all the constants
 export {

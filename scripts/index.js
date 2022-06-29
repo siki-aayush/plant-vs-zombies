@@ -30,9 +30,11 @@ import {
     MelonPultCard,
     SpikeweedCard,
     SunflowerCard,
+    LAWN_CLEANER_WIDTH,
 } from "./constants.js";
 import Cell from "./classes/Cell.js";
 import Sun from "./classes/Sun.js";
+import LawnCleaner from "./classes/LawnCleaner.js";
 import Zombie, {
     BucketHeadZombie,
     ConeHeadZombie,
@@ -43,16 +45,19 @@ import { initializeGrid, isCollided } from "./utils.js";
 class Game {
     constructor() {
         this.canvasPosition = canvas.getBoundingClientRect();
+
         this.grids = [];
         this.zombies = [];
         this.suns = [];
         this.projectiles = [];
+        this.plants = [];
+        this.lawnCleaners = [];
+
         this.sunCounts = 200;
         this.zombiesSpawnRate = 200;
         this.zombiesPositions = [];
         this.selectedPlant = 0;
         this.frames = 0;
-        this.plants = [];
 
         this.zombiesTypes = [
             BucketHeadZombie,
@@ -99,6 +104,22 @@ class Game {
                 blueprint: MelonPult,
             },
         ];
+
+        for (
+            let row = GRID_ROW_START_POS;
+            row < canvas.height - CELL_HEIGHT;
+            row += CELL_HEIGHT
+        ) {
+            this.lawnCleaners.push(
+                new LawnCleaner(
+                    this,
+                    350,
+                    row + 30,
+                    LAWN_CLEANER_WIDTH,
+                    LAWN_CLEANER_WIDTH
+                )
+            );
+        }
     }
 
     adddListeners() {
@@ -113,7 +134,7 @@ class Game {
         });
 
         // Updates the position of the mouseState variable when mouse moves
-        canvas.addEventListener("mouseleave", (e) => {
+        canvas.addEventListener("mouseleave", () => {
             mouseStatus.x = 0;
             mouseStatus.y = 0;
         });
@@ -127,7 +148,7 @@ class Game {
         });
 
         // Adds click listener on canvas
-        canvas.addEventListener("click", (e) => {
+        canvas.addEventListener("click", () => {
             let cellPosX;
             let cellPosY;
             let plantCost = 25;
@@ -199,7 +220,8 @@ class Game {
     manageAllZombies() {
         this.zombies.forEach((zombie) => {
             zombie.update();
-            if (zombie.x < GRID_COL_START_POS) {
+
+            if (zombie.x < GRID_COL_START_POS - LAWN_CLEANER_WIDTH) {
                 gameState.current = gameState.gameOver;
             }
 
@@ -213,7 +235,6 @@ class Game {
             }
         });
         //let selectedRow = CELL_HEIGHT + GRID_ROW_START_POS + CELL_PAD;
-
         let selectedRow =
             Math.floor(Math.random() * 5) * CELL_HEIGHT +
             GRID_ROW_START_POS +
@@ -237,27 +258,14 @@ class Game {
 
     manageAllProjectiles() {
         this.projectiles.forEach((projectile) => {
-            // Update projectile positionsl
             projectile.update();
-
-            //this.zombies.every((zombie) => {
-            //    if (isCollided(projectile, zombie)) {
-            //        zombie.health -= projectile.damage;
-            //        projectile.delete = true;
-            //        return false;
-            //    }
-            //    return true;
-            //});
-            //if (projectile > canvas.width - CELL_WIDTH) {
-            //    projectile.delete = true;
-            //}
         });
     }
 
     manageSuns() {
         if (this.frames % 300 === 0) {
             let x =
-                Math.random() * (canvas.width - CELL_WIDTH) +
+                Math.random() * (canvas.width - CELL_WIDTH * 2) +
                 GRID_COL_START_POS;
             let y = Math.random() * 5 * CELL_HEIGHT + GRID_ROW_START_POS;
             this.suns.push(new Sun(this, x, y, 0));
@@ -268,8 +276,13 @@ class Game {
             if (isCollided(sun, mouseStatus)) {
                 this.sunCounts += sun.value;
                 sun.collect = true;
-                //sun.delete = true;
             }
+        });
+    }
+
+    manageLawnCleaners() {
+        this.lawnCleaners.forEach((lawncleaner) => {
+            lawncleaner.update();
         });
     }
 
@@ -339,12 +352,15 @@ class Game {
         this.manageAllProjectiles();
         this.showResources();
         this.manageSuns();
+        this.manageLawnCleaners();
 
         this.cleanOrphanObjects();
         this.showCards();
 
         // Increases frame by 1 on every loop (used as a timer)
         this.frames++;
+
+        console.log(this.suns);
 
         // If the game is over it stops the animationFrame
         if (gameState.current !== gameState.gameOver)

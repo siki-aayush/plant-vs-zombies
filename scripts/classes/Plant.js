@@ -129,9 +129,7 @@ export default class Plant {
     }
 
     //attacks
-    attack() {
-        this.draw();
-    }
+    attack() {}
 
     // Changes animation (Idle attack die)
     updateAnimation() {}
@@ -160,6 +158,7 @@ export default class Plant {
                 }
             });
         }
+        this.draw();
     }
 }
 
@@ -183,6 +182,9 @@ export class Sunflower extends Plant {
         this.offsety = -15;
         this.offsetW = -15;
         this.offsetH = -15;
+
+        // For sun interval
+        this.frame = 1;
     }
 
     // Loads the sprite of the zombie
@@ -192,7 +194,8 @@ export class Sunflower extends Plant {
     }
 
     spwanSun() {
-        if (this.game.frames % 2000 === 0) {
+        setInterval(() => {});
+        if (this.frame % 2000 === 0) {
             this.game.suns.push(
                 new Sun(
                     this.game,
@@ -208,6 +211,7 @@ export class Sunflower extends Plant {
         super.update();
         this.spwanSun();
         this.draw();
+        this.frame += 1;
     }
 }
 
@@ -233,7 +237,6 @@ export class PeaShooter extends Plant {
                 )
             );
         }
-        this.draw();
     }
 }
 
@@ -298,7 +301,6 @@ export class Repeater extends Plant {
                 )
             );
         }
-        this.draw();
     }
 }
 
@@ -320,7 +322,6 @@ export class snowPea extends Plant {
         } else {
             this.cooldown = 0;
         }
-        this.draw();
     }
 }
 
@@ -405,7 +406,6 @@ export class ThreePeaShooter extends Plant {
                 );
             }
         }
-        this.draw();
     }
 
     update() {
@@ -435,6 +435,8 @@ export class ThreePeaShooter extends Plant {
                 }
             });
         }
+
+        this.draw();
     }
 }
 
@@ -526,7 +528,6 @@ export class Chomper extends Plant {
                 return true;
             });
         }
-        this.draw();
     }
 }
 export class WallNut extends Plant {
@@ -577,9 +578,9 @@ export class WallNut extends Plant {
         }
     }
 
-    attack() {
-        this.draw();
-    }
+    //attack() {
+    //    this.draw();
+    //}
 }
 
 export class PotatoMines extends Plant {
@@ -642,7 +643,6 @@ export class PotatoMines extends Plant {
                 }
             });
         }
-        this.draw();
     }
 }
 
@@ -682,9 +682,9 @@ export class Spikeweed extends Plant {
         });
     }
 
-    attack() {
-        this.draw();
-    }
+    //attack() {
+    //    this.draw();
+    //}
 }
 
 export class MelonPult extends Plant {
@@ -699,6 +699,5 @@ export class MelonPult extends Plant {
         } else {
             this.cooldown = 0;
         }
-        this.draw();
     }
 }

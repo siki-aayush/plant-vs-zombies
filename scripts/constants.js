@@ -39,6 +39,13 @@ const gameState = {
     gameOver: 2,
 };
 
+// Bullets
+export const normalBullet = new Image();
+export const melonBullet = new Image();
+
+normalBullet.src = "/assets/images/Plants/PB00.gif";
+melonBullet.src = "/assets/images/Melonpult_melon.webp";
+
 // Images
 const bg = new Image();
 export const SunflowerCard = new Image();
@@ -71,6 +78,31 @@ sunImg.src = "../assets/images/SunSprite_79x79.png";
 resourcescard.src = "../assets/images/interface/SunBack.png";
 LawnCleanerImg.src = "../assets/images/interface/LawnCleaner.png";
 Button.src = "../assets/images/interface/Button.png";
+
+// Audios
+export const introTheme = new Audio();
+export const theme = new Audio();
+export const chomp = new Audio();
+export const bucketZombieFall = new Audio();
+export const zombieFall = new Audio();
+export const plantation = new Audio();
+export const hoverSound = new Audio();
+export const select = new Audio();
+export const peaShoot = new Audio();
+export const peaHit = new Audio();
+export const clickSound = new Audio();
+
+select.src = "assets/audio/click.mp3";
+hoverSound.src = "assets/audio/hover.mp3";
+plantation.src = "assets/audio/plantation.mp3";
+peaShoot.src = "assets/audio/pea_shoot.mp3";
+bucketZombieFall.src = "assets/audio/bucket_zombie_fall.mp3";
+zombieFall.src = "assets/audio/zombie_fall.mp3";
+introTheme.src = "assets/audio/introTheme.mp3";
+theme.src = "assets/audio/theme.mp3";
+chomp.src = "assets/audio/chomp.mp3";
+peaHit.src = "assets/audio/pea_hit.mp3";
+clickSound.src = "assets/audio/click.mp3";
 
 // Export all the constants
 export {

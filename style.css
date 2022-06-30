@@ -5,12 +5,113 @@
 
 body {
     background-color: white;
+    position: relative;
 }
 
-#canvas1 {
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+}
+/*#canvas1,*/
+/*.start-menu,*/
+/*.end-menu {*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    left: 50%;*/
+/*    transform: translate(-50%, -50%);*/
+/*    background-color: white;*/
+/*    z-index: 1;*/
+/*}*/
+
+.start-menu {
     position: absolute;
-    top: 50%;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 2;
+    background-image: url("./assets/images/startmenu.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.start-menu__img,
+.start-menu__text {
+    position: absolute;
+    bottom: 60px;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
+    z-index: 3;
+    width: 200px;
+    height: 80px;
+    transition: all 300ms ease;
+}
+
+.start-menu__text {
+    bottom: 57px;
+    font-size: 55px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.start-menu__btn:hover .start-menu__img,
+.start-menu__btn:hover .start-menu__text {
+    transform: scale(1.1);
+}
+
+.end-menu {
+    position: absolute;
+    width: 720px;
+    height: 850px;
+    top: 50px;
+    left: 35%;
+    background-image: url("./assets/images/interface/SeedChooser_Background.png");
+    background-size: cover;
+    z-index: 2;
+}
+
+.end-menu__img,
+.end-menu__text {
+    position: absolute;
+    bottom: 60px;
+    left: 35%;
+    z-index: 3;
+    width: 200px;
+    height: 80px;
+    transition: all 300ms ease;
+}
+
+.end-menu__text {
+    bottom: 57px;
+    font-size: 55px;
+    text-align: center;
+    cursor: pointer;
+}
+.end-menu__btn:hover .end-menu__img,
+.end-menu__btn:hover .end-menu__text {
+    transform: scale(1.1);
+}
+
+.end-menu__highscore,
+.end-menu__score {
+    font-size: 55px;
+    position: absolute;
+    top: 120px;
+    left: 20%;
+    z-index: 3;
+    transition: all 300ms ease;
+}
+
+.end-menu__score {
+    top: 190px;
+}
+
+.hide {
+    display: none;
 }

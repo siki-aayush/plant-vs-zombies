@@ -1,4 +1,7 @@
-import Projectile, { BottomProjectile, TopProjectile } from "../Projectile.js";
+import Projectile from "../projectiles/Projectile.js";
+import TopProjectile from "../projectiles/TopProjectile.js";
+import BottomProjectile from "../projectiles/BottomProjectile.js";
+
 import {
     CELL_PAD,
     CELL_WIDTH,

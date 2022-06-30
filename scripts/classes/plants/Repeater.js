@@ -1,5 +1,5 @@
 import Plant from "./Plant.js";
-import Projectile from "../Projectile.js";
+import Projectile from "../projectiles/Projectile.js";
 import { CELL_WIDTH, peaShoot } from "../../constants.js";
 
 export default class Repeater extends Plant {

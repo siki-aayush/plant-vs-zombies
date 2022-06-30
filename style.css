@@ -21,6 +21,7 @@ a {
     text-align: center;
     height: 100vh;
 }
+
 /*#canvas1,*/
 /*.start-menu,*/
 /*.end-menu {*/
@@ -41,13 +42,14 @@ a {
     background-image: url("./assets/images/startmenu.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    user-select: none;
 }
 
 .start-menu__img,
 .start-menu__text {
     position: absolute;
     bottom: 60px;
-    left: 50%;
+    left: 47%;
     z-index: 3;
     width: 200px;
     height: 80px;

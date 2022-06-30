@@ -1,6 +1,6 @@
 import Plant from "./Plant.js";
 import { CELL_WIDTH, peaShoot } from "../../constants.js";
-import Projectile from "../Projectile.js";
+import Projectile from "../projectiles/Projectile.js";
 
 export default class PeaShooter extends Plant {
     attack() {

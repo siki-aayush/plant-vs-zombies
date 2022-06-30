@@ -1,9 +1,4 @@
-import { CELL_PAD, ctx } from "../constants.js";
-
-//const zombiesTypes = [];
-//const footballZombie = new Image();
-//footballZombie.src = "../../assets/images/FootballZombieSprite_300.png";
-//zombiesTypes.push(footballZombie);
+import { CELL_PAD, ctx, zombieFall } from "../constants.js";
 
 export default class Zombie {
     /**
@@ -75,6 +70,7 @@ export default class Zombie {
 
     // Draws the zombie
     draw() {
+        // If hit decreases the opacity
         if (this.hit) {
             ctx.globalAlpha = 0.6;
         }
@@ -89,6 +85,8 @@ export default class Zombie {
             this.w + this.offsetX,
             this.h + this.offsety
         );
+
+        // Resets the opacity after 100 ms
         if (this.hit) {
             ctx.globalAlpha = 1;
             setTimeout(() => {
@@ -97,6 +95,7 @@ export default class Zombie {
         }
     }
 
+    // Changes the frame to attacking
     attackAnimation() {
         this.startFrameX = 8;
         this.startFrameY = 2;
@@ -104,6 +103,7 @@ export default class Zombie {
         this.endFrameY = 5;
     }
 
+    // Removes the zombies
     removeZombies() {
         if (this.frameX === this.endFrameX && this.frameY === this.endFrameY) {
             let attackRowIdx = this.game.zombiesPositions.indexOf(this.y);
@@ -113,6 +113,7 @@ export default class Zombie {
         }
     }
 
+    // Sets the frames to the startFrames if not between start frame and end frame
     checkFrames() {
         if (this.frameY < this.startFrameY || this.frameY > this.endFrameY) {
             this.frameX = this.startFrameX;
@@ -125,6 +126,7 @@ export default class Zombie {
         }
     }
 
+    // Sets the start frames and end frame to the dieFrame
     dieAnimation() {
         this.startFrameX = 3;
         this.startFrameY = 9;
@@ -133,6 +135,7 @@ export default class Zombie {
         this.increment = 0;
     }
 
+    // Loops the animation between the start frame and end frame
     loopAnimation() {
         if (this.game.frames % this.animationSpeed === 0) {
             if (this.frameY < this.endFrameY) {
@@ -156,6 +159,7 @@ export default class Zombie {
         }
     }
 
+    // Updates the positions and Animations
     update() {
         this.x -= this.increment;
         if (this.attacking) {
@@ -163,6 +167,7 @@ export default class Zombie {
         }
 
         if (this.die) {
+            zombieFall.play();
             this.dieAnimation();
             this.checkFrames();
             this.removeZombies();

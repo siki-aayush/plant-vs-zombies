@@ -31,6 +31,7 @@ import {
     SpikeweedCard,
     SunflowerCard,
     LAWN_CLEANER_WIDTH,
+    Button,
 } from "./constants.js";
 import Cell from "./classes/Cell.js";
 import Sun from "./classes/Sun.js";
@@ -39,12 +40,22 @@ import Zombie, {
     BucketHeadZombie,
     ConeHeadZombie,
     NormalZombie,
+    DragonZombie,
+    BallonZombie,
 } from "./classes/Zombie.js";
 import { initializeGrid, isCollided } from "./utils.js";
 
 class Game {
     constructor() {
         this.canvasPosition = canvas.getBoundingClientRect();
+        this.animationId = undefined;
+
+        this.startMenu = document.querySelector(".start-menu");
+        this.startBtn = document.querySelector(".start-menu__btn");
+        this.endMenu = document.querySelector(".end-menu");
+        this.endBtn = document.querySelector(".end-menu__btn");
+        this.endScore = document.querySelector(".end-menu__score");
+        this.endHighscore = document.querySelector(".end-menu__highscore");
 
         this.grids = [];
         this.zombies = [];
@@ -53,17 +64,21 @@ class Game {
         this.plants = [];
         this.lawnCleaners = [];
 
+        this.score = 0;
+        this.highScore = 0;
         this.sunCounts = 200;
         this.zombiesSpawnRate = 200;
         this.zombiesPositions = [];
         this.selectedPlant = 0;
-        this.frames = 0;
+        this.frames = 1;
 
         this.zombiesTypes = [
+            BallonZombie,
             BucketHeadZombie,
             ConeHeadZombie,
             NormalZombie,
             Zombie,
+            DragonZombie,
         ];
 
         this.plantsTypes = [
@@ -104,27 +119,26 @@ class Game {
                 blueprint: MelonPult,
             },
         ];
-
-        for (
-            let row = GRID_ROW_START_POS;
-            row < canvas.height - CELL_HEIGHT;
-            row += CELL_HEIGHT
-        ) {
-            this.lawnCleaners.push(
-                new LawnCleaner(
-                    this,
-                    350,
-                    row + 30,
-                    LAWN_CLEANER_WIDTH,
-                    LAWN_CLEANER_WIDTH
-                )
-            );
-        }
     }
 
     adddListeners() {
+        // Get the relative position of the canvas
         window.addEventListener("resize", () => {
             this.canvasPosition = canvas.getBoundingClientRect();
+        });
+
+        this.startBtn.addEventListener("click", () => {
+            console.log("testing");
+            this.startMenu.classList.add("hide");
+            //this.init();
+            this.animate();
+        });
+
+        this.endMenu.addEventListener("click", () => {
+            this.endMenu.classList.add("hide");
+            this.reset();
+            this.init();
+            this.animate();
         });
 
         // Updates the position of the mouseState variable when mouse moves
@@ -200,6 +214,24 @@ class Game {
         });
     }
 
+    initializeLawnCleaners() {
+        for (
+            let row = GRID_ROW_START_POS;
+            row < canvas.height - CELL_HEIGHT;
+            row += CELL_HEIGHT
+        ) {
+            this.lawnCleaners.push(
+                new LawnCleaner(
+                    this,
+                    350,
+                    row + 30,
+                    LAWN_CLEANER_WIDTH,
+                    LAWN_CLEANER_WIDTH
+                )
+            );
+        }
+    }
+
     //Draws the grid
     drawGrid() {
         this.grids.forEach((gridCell) => {
@@ -226,13 +258,6 @@ class Game {
             }
 
             if (zombie.health <= 0) {
-                // Delete the dead zombies from attacking row lists
-                //let attackRowIdx = this.zombiesPositions.indexOf(zombie.y);
-                //this.zombiesPositions.splice(attackRowIdx, 1);
-
-                // sets the zombie as orphan to be deleted during clearing process
-                //zombie.delete = true;
-
                 zombie.die = true;
                 zombie.attacking = false;
             }
@@ -305,11 +330,19 @@ class Game {
     showResources() {
         ctx.drawImage(resourcescard, 20, 15, 145, 45);
         ctx.fillStyle = "black";
-        ctx.font = "30px Arial";
-        if (gameState.current === gameState.gameOver) {
-            ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
-        }
+        ctx.font = "30px Creepster";
         ctx.fillText(this.sunCounts, 79, 48);
+
+        //highScore
+        ctx.font = "25px Creepster";
+        ctx.fillStyle = "#ffe9ac";
+        ctx.drawImage(Button, canvas.width - 225, 10, 225, 60);
+        ctx.fillText(`High Score: ${this.highScore}`, canvas.width - 195, 44);
+
+        // Score
+        ctx.fillStyle = "#ffe9ac";
+        ctx.drawImage(Button, 20, 70, 135, 50);
+        ctx.fillText(`Score ${this.score}`, 39, 101);
     }
 
     showCards() {
@@ -347,7 +380,7 @@ class Game {
         //ctx.drawImage(bg, 0, 0, 1540, 600);
         //ctx.fillRect(0, 0, colSize.width, colSize.height);
         ctx.drawImage(bg, 0, 0, canvas.width + 573, canvas.height);
-        this.drawGrid();
+        //this.drawGrid();
 
         // Manages the objects in the game
         this.manageAllPlants();
@@ -364,14 +397,46 @@ class Game {
         this.frames++;
 
         // If the game is over it stops the animationFrame
-        if (gameState.current !== gameState.gameOver)
-            requestAnimationFrame(this.animate);
+        if (gameState.current !== gameState.gameOver) {
+            this.animationId = requestAnimationFrame(this.animate);
+        } else if (gameState.current === gameState.gameOver) {
+            ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+            this.endMenu.classList.remove("hide");
+            fetch("http://localhost:3000/highscore", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ score: this.score }),
+            });
+            this.endScore.innerHTML = `Score: ${this.score}`;
+            this.endHighscore.innerHTML =
+                this.score >= this.highScore
+                    ? `High Score: ${this.score}`
+                    : `High Score: ${this.highScore}`;
+            //cancelAnimationFrame(this.animationId);
+        }
     };
 
-    init() {
+    reset() {
+        this.zombies = [];
+        this.suns = [];
+        this.projectiles = [];
+        this.plants = [];
+        this.lawnCleaners = [];
+        this.grids = [];
+
+        this.frames = 1;
+        this.score = 0;
+
+        gameState.current = gameState.gamePlaying;
+    }
+
+    async init() {
+        let data = await fetch("http://localhost:3000/highscore");
+        let parsedData = await data.json();
+        this.highScore = parsedData.highscore;
         this.grids = initializeGrid(Cell);
+        this.initializeLawnCleaners();
         this.adddListeners();
-        this.animate();
     }
 }
 

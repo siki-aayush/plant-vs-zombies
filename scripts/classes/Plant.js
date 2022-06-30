@@ -511,6 +511,7 @@ export class Chomper extends Plant {
 
                     // Eat the zombie
                     zombie.delete = true;
+                    this.game.score += 10;
 
                     // Give a cooldown of 10 sec before it can eat again and
                     // reset the animation frame
@@ -640,6 +641,7 @@ export class PotatoMines extends Plant {
                     )
                 ) {
                     zombie.delete = true;
+                    this.game.score += 10;
                 }
             });
         }
@@ -693,7 +695,7 @@ export class MelonPult extends Plant {
             this.cooldown++;
             if (this.cooldown % 100 === 0) {
                 this.game.projectiles.push(
-                    new ParabolicProjectile(this.game, this.x, this.y, 65, 45)
+                    new ParabolicProjectile(this.game, this.x, this.y, 62, 55)
                 );
             }
         } else {

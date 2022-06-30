@@ -54,8 +54,9 @@ export const SpikeweedCard = new Image();
 export const sunImg = new Image();
 export const resourcescard = new Image();
 export const LawnCleanerImg = new Image();
+export const Button = new Image();
 
-bg.src = "./assets/images/interface/background1.jpg";
+bg.src = "./assets/images/interface/background2.jpg";
 SunflowerCard.src = "../assets/images/Card/Plants/SunFlower.png";
 PeaShooterCard.src = "../assets/images/Card/Plants/Peashooter.png";
 RepeaterCard.src = "../assets/images/Card/Plants/Repeater.png";
@@ -69,6 +70,7 @@ MelonPultCard.src = "../assets/images/Card/Plants/Melonpult_melon.webp";
 sunImg.src = "../assets/images/SunSprite_79x79.png";
 resourcescard.src = "../assets/images/interface/SunBack.png";
 LawnCleanerImg.src = "../assets/images/interface/LawnCleaner.png";
+Button.src = "../assets/images/interface/Button.png";
 
 // Export all the constants
 export {

@@ -1,14 +1,30 @@
-import Plant, {
-    Chomper,
-    MelonPult,
-    PeaShooter,
-    PotatoMines,
-    Repeater,
-    Spikeweed,
-    Sunflower,
-    ThreePeaShooter,
-    WallNut,
-} from "./classes/Plant.js";
+import Chomper from "./classes/plants/Chomper.js";
+import MelonPult from "./classes/plants/MelonPult.js";
+import PeaShooter from "./classes/plants/PeaShooter.js";
+import PotatoMines from "./classes/plants/PotatoMines.js";
+import Repeater from "./classes/plants/Repeater.js";
+import Spikeweed from "./classes/plants/Spikeweed.js";
+import Sunflower from "./classes/plants/Sunflower.js";
+import ThreePeaShooter from "./classes/plants/ThreePeaShooter.js";
+import WallNut from "./classes/plants/WallNut.js";
+import Zombie from "./classes/zombies/Zombie.js";
+import NormalZombie from "./classes/zombies/NormalZombie.js";
+import BucketHeadZombie from "./classes/zombies/BucketHeadZombie.js";
+import ConeHeadZombie from "./classes/zombies/ConeHeadZombie.js";
+import BallonZombie from "./classes/zombies/BallonZombie.js";
+import DragonZombie from "./classes/zombies/DragonZombie.js";
+//import Plant, {
+//    Chomper,
+//    MelonPult,
+//    PeaShooter,
+//    PotatoMines,
+//    Repeater,
+//    Spikeweed,
+//    Sunflower,
+//    ThreePeaShooter,
+//    WallNut,
+//} from "./classes/Plant.js";
+
 import {
     canvas,
     ctx,
@@ -32,24 +48,28 @@ import {
     SunflowerCard,
     LAWN_CLEANER_WIDTH,
     Button,
+    theme,
+    clickSound,
 } from "./constants.js";
 import Cell from "./classes/Cell.js";
 import Sun from "./classes/Sun.js";
 import LawnCleaner from "./classes/LawnCleaner.js";
-import Zombie, {
-    BucketHeadZombie,
-    ConeHeadZombie,
-    NormalZombie,
-    DragonZombie,
-    BallonZombie,
-} from "./classes/Zombie.js";
+// import Zombie, {
+//     BucketHeadZombie,
+//     ConeHeadZombie,
+//     NormalZombie,
+//     DragonZombie,
+//     BallonZombie,
+// } from "./classes/Zombie.js";
 import { initializeGrid, isCollided } from "./utils.js";
 
 class Game {
     constructor() {
+        // Get canvas relative position
         this.canvasPosition = canvas.getBoundingClientRect();
         this.animationId = undefined;
 
+        // Get dom elements
         this.startMenu = document.querySelector(".start-menu");
         this.startBtn = document.querySelector(".start-menu__btn");
         this.endMenu = document.querySelector(".end-menu");
@@ -57,6 +77,7 @@ class Game {
         this.endScore = document.querySelector(".end-menu__score");
         this.endHighscore = document.querySelector(".end-menu__highscore");
 
+        // Initialize variables
         this.grids = [];
         this.zombies = [];
         this.suns = [];
@@ -122,18 +143,20 @@ class Game {
     }
 
     adddListeners() {
-        // Get the relative position of the canvas
+        // Get the new relative position of the canvas on resize
         window.addEventListener("resize", () => {
             this.canvasPosition = canvas.getBoundingClientRect();
         });
 
+        // Plays the game when start button is clicked
         this.startBtn.addEventListener("click", () => {
-            console.log("testing");
             this.startMenu.classList.add("hide");
-            //this.init();
+            theme.play();
+            theme.loop = true;
             this.animate();
         });
 
+        //
         this.endMenu.addEventListener("click", () => {
             this.endMenu.classList.add("hide");
             this.reset();
@@ -141,7 +164,7 @@ class Game {
             this.animate();
         });
 
-        // Updates the position of the mouseState variable when mouse moves
+        // Updates the mouse status everytime the mouse moves
         canvas.addEventListener("mousemove", (e) => {
             mouseStatus.x = e.x - this.canvasPosition.left;
             mouseStatus.y = e.y - this.canvasPosition.top;
@@ -153,16 +176,19 @@ class Game {
             mouseStatus.y = 0;
         });
 
+        // Sets the mouse status as clicked when clicked
         canvas.addEventListener("mousedown", () => {
             mouseStatus.clicked = true;
         });
 
+        // Sets the mouse status as unclicked when click is removed
         canvas.addEventListener("mouseup", () => {
             mouseStatus.clicked = false;
         });
 
         // Adds click listener on canvas
         canvas.addEventListener("click", () => {
+            clickSound.play();
             let cellPosX;
             let cellPosY;
             let plantCost = 25;
@@ -214,6 +240,7 @@ class Game {
         });
     }
 
+    // Initializes the lawn cleaners
     initializeLawnCleaners() {
         for (
             let row = GRID_ROW_START_POS;
@@ -249,26 +276,37 @@ class Game {
         this.plants = this.plants.filter((plant) => plant.health > 0);
     }
 
+    // Manages all the zombies on the ground
     manageAllZombies() {
         this.zombies.forEach((zombie) => {
+            // Updates the zombies positions and animations
             zombie.update();
 
+            // If zombie reaches the house then the game is set as over
             if (zombie.x < GRID_COL_START_POS - LAWN_CLEANER_WIDTH) {
                 gameState.current = gameState.gameOver;
             }
 
+            // If the zomibes health is 0 then the zombie is set as dying and
+            // attacking is set as false
             if (zombie.health <= 0) {
                 zombie.die = true;
                 zombie.attacking = false;
             }
         });
-        //let selectedRow = CELL_HEIGHT + GRID_ROW_START_POS + CELL_PAD;
+
+        // Randomly select the row at which the new zombie will spawn
         let selectedRow =
             Math.floor(Math.random() * 5) * CELL_HEIGHT +
             GRID_ROW_START_POS +
             CELL_PAD;
+
+        // If frames is equal to zombie spawn rate spawn zombie
         if (this.frames % this.zombiesSpawnRate === 0) {
+            // Choose a random zombie type
             let choice = Math.floor(Math.random() * this.zombiesTypes.length);
+
+            // Adds the zombie
             this.zombies.push(
                 new this.zombiesTypes[choice](
                     this,
@@ -280,27 +318,37 @@ class Game {
             );
 
             this.zombiesPositions.push(selectedRow);
+
+            // Decreases the zombie spawn rate gradually until it finally reaches 300
             this.zombiesSpawnRate -= this.zombiesSpawnRate > 300 ? 20 : 0;
         }
     }
 
+    // Manages all the projectiles
     manageAllProjectiles() {
         this.projectiles.forEach((projectile) => {
             projectile.update();
         });
     }
 
+    // Manages all the suns
     manageSuns() {
-        if (this.frames % 300 === 0) {
+        if (this.frames % 400 === 0) {
+            // Randomly select the position for the sun to spawn
             let x =
                 Math.random() * (canvas.width - CELL_WIDTH * 2) +
                 GRID_COL_START_POS;
+
+            // Gradually bring the sun from the top to the position
             let y = Math.random() * 5 * CELL_HEIGHT + GRID_ROW_START_POS;
             this.suns.push(new Sun(this, x, y, 0));
         }
 
+        // Updates the position of the sun
         this.suns.forEach((sun) => {
             sun.update();
+
+            // If the mouse is hovered over the sun then the sun is collected
             if (isCollided(sun, mouseStatus)) {
                 this.sunCounts += sun.value;
                 sun.collect = true;
@@ -308,12 +356,14 @@ class Game {
         });
     }
 
+    // Manages all the lawn cleaners
     manageLawnCleaners() {
         this.lawnCleaners.forEach((lawncleaner) => {
             lawncleaner.update();
         });
     }
 
+    // Cleans all the orphan objects
     cleanOrphanObjects() {
         // Clears orphan projectiles
         this.projectiles = this.projectiles.filter(
@@ -327,33 +377,41 @@ class Game {
         this.zombies = this.zombies.filter((zombie) => !zombie.delete);
     }
 
+    // Shows all the resources
     showResources() {
+        // Draws the sun counts
         ctx.drawImage(resourcescard, 20, 15, 145, 45);
         ctx.fillStyle = "black";
         ctx.font = "30px Creepster";
         ctx.fillText(this.sunCounts, 79, 48);
 
-        //highScore
+        // Draws the HighScore
         ctx.font = "25px Creepster";
         ctx.fillStyle = "#ffe9ac";
         ctx.drawImage(Button, canvas.width - 225, 10, 225, 60);
         ctx.fillText(`High Score: ${this.highScore}`, canvas.width - 195, 44);
 
-        // Score
+        // Draws the Score
         ctx.fillStyle = "#ffe9ac";
         ctx.drawImage(Button, 20, 70, 135, 50);
         ctx.fillText(`Score ${this.score}`, 39, 101);
     }
 
+    // Draws the plant cards for selecting the plants
     showCards() {
         this.plantsTypes.forEach((plant, idx) => {
+            //  Sets the default boundary
             let cardBoundary = {
                 x: 20,
                 y: GRID_ROW_START_POS + 80 * idx,
                 w: 100,
                 h: 60,
             };
+
+            // Sets the y position of the card
             let cardY = GRID_ROW_START_POS + 80 * idx;
+
+            // Draws the card
             ctx.drawImage(
                 plant.card,
                 0,
@@ -368,6 +426,7 @@ class Game {
                 idx === this.selectedPlant ? cardBoundary.h + 8 : cardBoundary.h
             );
 
+            // Clicked plant is selected from the card
             if (isCollided(mouseStatus, cardBoundary) && mouseStatus.clicked) {
                 this.selectedPlant = idx;
             }
@@ -377,9 +436,10 @@ class Game {
     // Creates an animation loop
     animate = () => {
         ctx.fillStyle = "black";
-        //ctx.drawImage(bg, 0, 0, 1540, 600);
-        //ctx.fillRect(0, 0, colSize.width, colSize.height);
+        // Draws the background image
         ctx.drawImage(bg, 0, 0, canvas.width + 573, canvas.height);
+
+        // Draws the grid
         //this.drawGrid();
 
         // Manages the objects in the game
@@ -390,24 +450,42 @@ class Game {
         this.manageSuns();
         this.manageLawnCleaners();
 
+        // Cleans the objects
         this.cleanOrphanObjects();
+
+        // Displays the cards
         this.showCards();
 
         // Increases frame by 1 on every loop (used as a timer)
         this.frames++;
 
+        // The game is set as over when the frame goes higher than 30000
+        if (this.frames > 30000) {
+            gameState.current = gameState.gameOver;
+        }
+
         // If the game is over it stops the animationFrame
         if (gameState.current !== gameState.gameOver) {
+            // Continues the loop
             this.animationId = requestAnimationFrame(this.animate);
         } else if (gameState.current === gameState.gameOver) {
+            // Game is set as over
             ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+
+            // Shows the game end menu
             this.endMenu.classList.remove("hide");
+
+            // Posts the highscore value on the backend
             fetch("http://localhost:3000/highscore", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ score: this.score }),
             });
+
+            // Shows the score on the dom
             this.endScore.innerHTML = `Score: ${this.score}`;
+
+            // Shows the high score
             this.endHighscore.innerHTML =
                 this.score >= this.highScore
                     ? `High Score: ${this.score}`
@@ -416,6 +494,7 @@ class Game {
         }
     };
 
+    // Resets all the varibales to initial value for reset
     reset() {
         this.zombies = [];
         this.suns = [];
@@ -430,15 +509,24 @@ class Game {
         gameState.current = gameState.gamePlaying;
     }
 
+    // Initializes grids
     async init() {
+        // Fetches data from the server
         let data = await fetch("http://localhost:3000/highscore");
         let parsedData = await data.json();
         this.highScore = parsedData.highscore;
+
+        // Initializes Grid
         this.grids = initializeGrid(Cell);
+
+        // LawnCleaners
         this.initializeLawnCleaners();
+
+        // Add listeners
         this.adddListeners();
     }
 }
 
+// Creates a game object
 const game = new Game();
 game.init();

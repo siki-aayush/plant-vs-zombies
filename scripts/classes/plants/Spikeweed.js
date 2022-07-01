@@ -1,5 +1,6 @@
 import Plant from "./Plant.js";
 import { isCollided } from "../../utils.js";
+import { SpikeweedSprite } from "../../constants.js";
 
 export default class Spikeweed extends Plant {
     initPlantAnimation() {
@@ -25,8 +26,7 @@ export default class Spikeweed extends Plant {
 
     // Loads the sprite of the zombie
     loadSprite() {
-        this.plantType = new Image();
-        this.plantType.src = "/assets/images/SpikeweedSprite_100x41.png";
+        this.plantType = SpikeweedSprite;
     }
 
     handleCollision() {

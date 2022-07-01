@@ -8,6 +8,7 @@ import {
     CELL_HEIGHT,
     GRID_ROW_START_POS,
     peaShoot,
+    ThreepeaShooterSprite,
 } from "../../constants.js";
 import { isCollided } from "../../utils.js";
 import Plant from "./Plant.js";
@@ -37,8 +38,7 @@ export default class ThreePeaShooter extends Plant {
 
     // Loads the sprite of the zombie
     loadSprite() {
-        this.plantType = new Image();
-        this.plantType.src = "/assets/images/ThreepeaterSprite_73x80.png";
+        this.plantType = ThreepeaShooterSprite;
     }
 
     attack() {
@@ -82,7 +82,6 @@ export default class ThreePeaShooter extends Plant {
                 this.y + CELL_HEIGHT <
                 5 * CELL_HEIGHT + GRID_ROW_START_POS + CELL_PAD
             ) {
-                console.log("inside");
                 this.game.projectiles.push(
                     new BottomProjectile(
                         this.game,

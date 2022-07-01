@@ -1,3 +1,4 @@
+import { DragonZombieSprite } from "../../constants.js";
 import Zombie from "./Zombie.js";
 
 export default class DragonZombie extends Zombie {
@@ -34,7 +35,6 @@ export default class DragonZombie extends Zombie {
     }
 
     loadSprite() {
-        this.zombieType = new Image();
-        this.zombieType.src = "/assets/images/dragonZombie_464x400.png";
+        this.zombieType = DragonZombieSprite;
     }
 }

@@ -1,3 +1,4 @@
+import { ConeHeadZombieSprite } from "../../constants.js";
 import NormalZombie from "./NormalZombie.js";
 
 export default class ConeHeadZombie extends NormalZombie {
@@ -15,7 +16,6 @@ export default class ConeHeadZombie extends NormalZombie {
     }
 
     loadSprite() {
-        this.zombieType = new Image();
-        this.zombieType.src = "/assets/images/ConeheadZombieSprite_166x144.png";
+        this.zombieType = ConeHeadZombieSprite;
     }
 }

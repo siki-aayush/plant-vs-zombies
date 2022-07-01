@@ -1,5 +1,5 @@
 import Plant from "./Plant.js";
-import { CELL_WIDTH, CELL_HEIGHT } from "../../constants.js";
+import { CELL_WIDTH, CELL_HEIGHT, PotatoMineSprite } from "../../constants.js";
 import { isCollided } from "../../utils.js";
 
 export default class PotatoMines extends Plant {
@@ -26,8 +26,7 @@ export default class PotatoMines extends Plant {
 
     // Loads the sprite of the zombie
     loadSprite() {
-        this.plantType = new Image();
-        this.plantType.src = "/assets/images/PotatoMineSprite_132x93.png";
+        this.plantType = PotatoMineSprite;
     }
 
     attack() {

@@ -1,4 +1,9 @@
-import { CELL_PAD, ctx, zombieFall } from "../../constants.js";
+import {
+    CELL_PAD,
+    ctx,
+    FootballZombieSprite,
+    zombieFall,
+} from "../../constants.js";
 
 export default class Zombie {
     /**
@@ -63,9 +68,7 @@ export default class Zombie {
 
     // Loads the sprite of the zombie
     loadSprite() {
-        this.zombieType = new Image();
-        this.zombieType.src =
-            "../../assets/images/FootballZombieSprite_300.png";
+        this.zombieType = FootballZombieSprite;
     }
 
     // Draws the zombie

@@ -1,6 +1,6 @@
 import Plant from "../Plant.js";
 import Sun from "../Sun.js";
-import { CELL_HEIGHT, peaShoot } from "../../constants.js";
+import { CELL_HEIGHT, peaShoot, SunflowerSprite } from "../../constants.js";
 
 export default class Sunflower extends Plant {
     initPlantAnimation() {
@@ -29,8 +29,7 @@ export default class Sunflower extends Plant {
 
     // Loads the sprite of the zombie
     loadSprite() {
-        this.plantType = new Image();
-        this.plantType.src = "/assets/images/SunFlowerSprite_73x74.png";
+        this.plantType = SunflowerSprite;
     }
 
     spwanSun() {

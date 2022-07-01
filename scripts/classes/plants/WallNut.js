@@ -1,3 +1,4 @@
+import { WallnutSprite } from "../../constants.js";
 import Plant from "./Plant.js";
 
 export default class WallNut extends Plant {
@@ -29,8 +30,7 @@ export default class WallNut extends Plant {
 
     // Loads the sprite of the zombie
     loadSprite() {
-        this.plantType = new Image();
-        this.plantType.src = "/assets/images/WallNutSprite_65x73.png";
+        this.plantType = WallnutSprite;
     }
 
     // Updates the animation

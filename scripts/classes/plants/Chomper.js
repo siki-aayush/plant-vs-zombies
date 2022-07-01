@@ -1,5 +1,5 @@
 import Plant from "./Plant.js";
-import { CELL_WIDTH, chomp } from "../../constants.js";
+import { CELL_WIDTH, chomp, ChomperSprite } from "../../constants.js";
 
 export default class Chomper extends Plant {
     initPlantAnimation() {
@@ -25,8 +25,7 @@ export default class Chomper extends Plant {
 
     // Loads the sprite of the zombie
     loadSprite() {
-        this.plantType = new Image();
-        this.plantType.src = "/assets/images/ChomperSprite_130x114.png";
+        this.plantType = ChomperSprite;
     }
 
     updateAnimation() {

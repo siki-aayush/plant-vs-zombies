@@ -44,9 +44,51 @@ export const normalBullet = new Image();
 export const melonBullet = new Image();
 
 normalBullet.src = "/assets/images/Plants/PB00.gif";
-melonBullet.src = "/assets/images/Melonpult_melon.webp";
+melonBullet.src = "/assets/images/Plants/Melonpult_melon.webp";
 
-// Images
+//Zombies
+export const FootballZombieSprite = new Image();
+export const BucketHeadZombieSprite = new Image();
+export const ConeHeadZombieSprite = new Image();
+export const DragonZombieSprite = new Image();
+export const BallonZombieSprite = new Image();
+export const NormalZombieSprite = new Image();
+
+FootballZombieSprite.src =
+    "/assets/images/Zombies/FootballZombieSprite_300.png";
+BucketHeadZombieSprite.src =
+    "/assets/images/Zombies/BucketheadZombieSprite_166x144.png";
+DragonZombieSprite.src = "/assets/images/Zombies/dragonZombie_464x400.png";
+BallonZombieSprite.src =
+    "/assets/images/Zombies/ballonZombieSprite_207x197.png";
+NormalZombieSprite.src = "/assets/images/Zombies/ZombieSprite_166x144.png";
+ConeHeadZombieSprite.src =
+    "/assets/images/Zombies/ConeheadZombieSprite_166x144.png";
+BallonZombieSprite.scr =
+    "/assets/images/Zombies/ballonZombieSprite_207x197.png";
+
+//Plants
+export const PeaShooterSprite = new Image();
+export const SunflowerSprite = new Image();
+export const MelonpultSprite = new Image();
+export const WallnutSprite = new Image();
+export const RepeaterSprite = new Image();
+export const SnowPeaSprite = new Image();
+export const ThreepeaShooterSprite = new Image();
+export const PotatoMineSprite = new Image();
+export const ChomperSprite = new Image();
+export const SpikeweedSprite = new Image();
+
+PeaShooterSprite.src = "/assets/images/Plants/PeashooterSprite_71x71.png";
+ChomperSprite.src = "/assets/images/Plants/ChomperSprite_130x114.png";
+PotatoMineSprite.src = "/assets/images/Plants/PotatoMineSprite_132x93.png";
+RepeaterSprite.src = "/assets/images/Plants/RepeaterSprite_73x71.png";
+SpikeweedSprite.src = "/assets/images/Plants/SpikeweedSprite_100x41.png";
+SunflowerSprite.src = "/assets/images/Plants/SunFlowerSprite_73x74.png";
+ThreepeaShooterSprite.src = "/assets/images/Plants/ThreepeaterSprite_73x80.png";
+WallnutSprite.src = "/assets/images/Plants/WallNutSprite_65x73.png";
+
+// Plants Cards
 const bg = new Image();
 export const SunflowerCard = new Image();
 export const PeaShooterCard = new Image();
@@ -58,26 +100,17 @@ export const WallNutCard = new Image();
 export const MelonPultCard = new Image();
 export const SpikeweedCard = new Image();
 
-export const sunImg = new Image();
-export const resourcescard = new Image();
-export const LawnCleanerImg = new Image();
-export const Button = new Image();
+bg.src = "./assets/images/Interface/background2.jpg";
+ThreePeaShooterCard.src = "../assets/images/Card/Plants/Threepeater.png";
+PotatoMinesCard.src = "../assets/images/Card/Plants/PotatoMine.png";
 
-bg.src = "./assets/images/interface/background2.jpg";
 SunflowerCard.src = "../assets/images/Card/Plants/SunFlower.png";
 PeaShooterCard.src = "../assets/images/Card/Plants/Peashooter.png";
 RepeaterCard.src = "../assets/images/Card/Plants/Repeater.png";
-ThreePeaShooterCard.src = "../assets/images/Card/Plants/Threepeater.png";
 ChomperCard.src = "../assets/images/Card/Plants/Chomper.png";
-PotatoMinesCard.src = "../assets/images/Card/Plants/PotatoMine.png";
 WallNutCard.src = "../assets/images/Card/Plants/WallNut.png";
 SpikeweedCard.src = "../assets/images/Card/Plants/Spikeweed.png";
 MelonPultCard.src = "../assets/images/Card/Plants/Melonpult_melon.webp";
-
-sunImg.src = "../assets/images/SunSprite_79x79.png";
-resourcescard.src = "../assets/images/interface/SunBack.png";
-LawnCleanerImg.src = "../assets/images/interface/LawnCleaner.png";
-Button.src = "../assets/images/interface/Button.png";
 
 // Audios
 export const introTheme = new Audio();
@@ -103,6 +136,17 @@ theme.src = "assets/audio/theme.mp3";
 chomp.src = "assets/audio/chomp.mp3";
 peaHit.src = "assets/audio/pea_hit.mp3";
 clickSound.src = "assets/audio/click.mp3";
+
+// Extras
+export const sunImg = new Image();
+export const resourcescard = new Image();
+export const LawnCleanerImg = new Image();
+export const Button = new Image();
+
+sunImg.src = "../assets/images/Interface/SunSprite_79x79.png";
+resourcescard.src = "../assets/images/Interface/SunBack.png";
+LawnCleanerImg.src = "../assets/images/Interface/LawnCleaner.png";
+Button.src = "../assets/images/Interface/Button.png";
 
 // Export all the constants
 export {

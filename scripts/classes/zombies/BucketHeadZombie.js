@@ -1,3 +1,4 @@
+import { BucketHeadZombieSprite } from "../../constants.js";
 import NormalZombie from "./NormalZombie.js";
 
 export default class BucketHeadZombie extends NormalZombie {
@@ -15,8 +16,6 @@ export default class BucketHeadZombie extends NormalZombie {
     }
 
     loadSprite() {
-        this.zombieType = new Image();
-        this.zombieType.src =
-            "/assets/images/BucketheadZombieSprite_166x144.png";
+        this.zombieType = BucketHeadZombieSprite;
     }
 }

@@ -1,6 +1,6 @@
 import Plant from "./Plant.js";
 import Projectile from "../projectiles/Projectile.js";
-import { CELL_WIDTH, peaShoot } from "../../constants.js";
+import { CELL_WIDTH, peaShoot, RepeaterSprite } from "../../constants.js";
 
 export default class Repeater extends Plant {
     initPlantAnimation() {
@@ -26,8 +26,7 @@ export default class Repeater extends Plant {
 
     // Loads the sprite of the zombie
     loadSprite() {
-        this.plantType = new Image();
-        this.plantType.src = "/assets/images/RepeaterSprite_73x71.png";
+        this.plantType = RepeaterSprite;
     }
 
     attack() {

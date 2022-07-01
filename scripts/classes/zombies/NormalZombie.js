@@ -1,3 +1,4 @@
+import { NormalZombieSprite } from "../../constants.js";
 import Zombie from "./Zombie.js";
 
 export default class NormalZombie extends Zombie {
@@ -15,8 +16,7 @@ export default class NormalZombie extends Zombie {
     }
 
     loadSprite() {
-        this.zombieType = new Image();
-        this.zombieType.src = "/assets/images/ZombieSprite_166x144.png";
+        this.zombieType = NormalZombieSprite;
     }
 
     initZombieAnimation() {

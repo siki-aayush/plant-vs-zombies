@@ -1,4 +1,4 @@
-import { CELL_PAD, ctx } from "../../constants.js";
+import { CELL_PAD, ctx, PeaShooterSprite } from "../../constants.js";
 import { isCollided } from "../../utils.js";
 
 export default class Plant {
@@ -58,8 +58,7 @@ export default class Plant {
 
     // Loads the sprite of the zombie
     loadSprite() {
-        this.plantType = new Image();
-        this.plantType.src = "/assets/images/PeashooterSprite_71x71.png";
+        this.plantType = PeaShooterSprite;
     }
 
     // Draws the plant

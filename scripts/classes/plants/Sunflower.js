@@ -1,6 +1,6 @@
-import Plant from "../Plant.js";
+import Plant from "./Plant.js";
 import Sun from "../Sun.js";
-import { CELL_HEIGHT, peaShoot, SunflowerSprite } from "../../constants.js";
+import { CELL_HEIGHT, SunflowerSprite } from "../../constants.js";
 
 export default class Sunflower extends Plant {
     static cost = 25;

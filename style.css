@@ -74,7 +74,7 @@ a {
     height: 850px;
     top: 50px;
     left: 35%;
-    background-image: url("./assets/images/interface/SeedChooser_Background.png");
+    background-image: url("./assets/images/Interface/SeedChooser_Background.png");
     background-size: cover;
     z-index: 2;
 }

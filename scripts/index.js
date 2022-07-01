@@ -7,23 +7,18 @@ import Spikeweed from "./classes/plants/Spikeweed.js";
 import Sunflower from "./classes/plants/Sunflower.js";
 import ThreePeaShooter from "./classes/plants/ThreePeaShooter.js";
 import WallNut from "./classes/plants/WallNut.js";
+
 import Zombie from "./classes/zombies/Zombie.js";
 import NormalZombie from "./classes/zombies/NormalZombie.js";
 import BucketHeadZombie from "./classes/zombies/BucketHeadZombie.js";
 import ConeHeadZombie from "./classes/zombies/ConeHeadZombie.js";
 import BallonZombie from "./classes/zombies/BallonZombie.js";
 import DragonZombie from "./classes/zombies/DragonZombie.js";
-//import Plant, {
-//    Chomper,
-//    MelonPult,
-//    PeaShooter,
-//    PotatoMines,
-//    Repeater,
-//    Spikeweed,
-//    Sunflower,
-//    ThreePeaShooter,
-//    WallNut,
-//} from "./classes/Plant.js";
+
+import Cell from "./classes/Cell.js";
+import Sun from "./classes/Sun.js";
+import LawnCleaner from "./classes/LawnCleaner.js";
+import { initializeGrid, isCollided } from "./utils.js";
 
 import {
     canvas,
@@ -51,17 +46,6 @@ import {
     theme,
     clickSound,
 } from "./constants.js";
-import Cell from "./classes/Cell.js";
-import Sun from "./classes/Sun.js";
-import LawnCleaner from "./classes/LawnCleaner.js";
-// import Zombie, {
-//     BucketHeadZombie,
-//     ConeHeadZombie,
-//     NormalZombie,
-//     DragonZombie,
-//     BallonZombie,
-// } from "./classes/Zombie.js";
-import { initializeGrid, isCollided } from "./utils.js";
 
 class Game {
     constructor() {
@@ -225,12 +209,10 @@ class Game {
 
             //If the user has required number of sun then the plant is placed at the selected cell position
 
-            if (
-                this.plantsTypes[this.selectedPlant].blueprint.cost <=
-                this.sunCounts
-            ) {
+            let CurrentPlant = this.plantsTypes[this.selectedPlant].blueprint;
+            if (CurrentPlant.cost <= this.sunCounts) {
                 this.plants.push(
-                    new this.plantsTypes[this.selectedPlant].blueprint(
+                    new CurrentPlant(
                         this,
                         cellPosX,
                         cellPosY,
@@ -239,7 +221,7 @@ class Game {
                     )
                 );
 
-                this.sunCounts -= plantCost;
+                this.sunCounts -= CurrentPlant.cost;
             }
         });
     }

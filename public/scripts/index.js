@@ -136,6 +136,7 @@ class Game {
         this.startBtn.addEventListener("click", () => {
             this.startMenu.classList.add("hide");
             theme.play();
+            theme.volume = 0.3;
             theme.loop = true;
             this.animate();
         });
@@ -458,7 +459,7 @@ class Game {
         // If the game is over it stops the animationFrame
         if (gameState.current !== gameState.gameOver) {
             // Continues the loop
-            this.animationId = requestAnimationFrame(this.animate);
+            this.animationId = window.requestAnimationFrame(this.animate);
         } else if (gameState.current === gameState.gameOver) {
             // Game is set as over
             ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
@@ -485,7 +486,10 @@ class Game {
                 this.score >= this.highScore
                     ? `High Score: ${this.score}`
                     : `High Score: ${this.highScore}`;
-            //cancelAnimationFrame(this.animationId);
+
+            console.log("testing");
+
+            //window.cancelAnimationFrame(this.animationId);
         }
     };
 

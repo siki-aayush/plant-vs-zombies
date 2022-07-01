@@ -37,7 +37,6 @@ export default class PotatoMines extends Plant {
         this.game.zombies.every((zombie) => {
             if (isCollided(this, zombie) && zombie.x + zombie.w > this.x) {
                 zombie.delete = true;
-                this.health = 0;
                 collided = true;
                 return false;
             }
@@ -46,6 +45,17 @@ export default class PotatoMines extends Plant {
 
         // If collided then all the zombies with one lane apart will also be killed
         if (collided) {
+            this.frameX = 0;
+            this.frameY = 1;
+            this.startFrameX = 0;
+            this.startFrameY = 1;
+            this.endFrameX = 0;
+            this.endFrameY = 1;
+            this.offsety = 20;
+            setTimeout(() => {
+                this.health = 0;
+            }, 200);
+
             this.game.zombies.forEach((zombie) => {
                 if (
                     isCollided(

@@ -467,11 +467,15 @@ class Game {
             this.endMenu.classList.remove("hide");
 
             // Posts the highscore value on the backend
-            fetch("http://localhost:3000/highscore", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ score: this.score }),
-            });
+            try {
+                fetch("http://localhost:3000/highscore", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ score: this.score }),
+                });
+            } catch (error) {
+                console.log("error", error);
+            }
 
             // Shows the score on the dom
             this.endScore.innerHTML = `Score: ${this.score}`;
@@ -503,9 +507,13 @@ class Game {
     // Initializes grids
     async init() {
         // Fetches data from the server
-        let data = await fetch("http://localhost:3000/highscore");
-        let parsedData = await data.json();
-        this.highScore = parsedData.highscore;
+        try {
+            let data = await fetch("http://localhost:3000/highscore");
+            let parsedData = await data.json();
+            this.highScore = parsedData.highscore;
+        } catch (error) {
+            this.highscore = 999;
+        }
 
         // Initializes Grid
         this.grids = initializeGrid(Cell);

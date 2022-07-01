@@ -100,7 +100,7 @@ export const WallNutCard = new Image();
 export const MelonPultCard = new Image();
 export const SpikeweedCard = new Image();
 
-bg.src = "./assets/images/Interface/background2.jpg";
+bg.src = "./assets/images/Interface/background1.jpg";
 ThreePeaShooterCard.src = "../assets/images/Card/Plants/Threepeater.png";
 PotatoMinesCard.src = "../assets/images/Card/Plants/PotatoMine.png";
 

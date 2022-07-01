@@ -3,6 +3,7 @@ import { CELL_WIDTH, CELL_HEIGHT, PotatoMineSprite } from "../../constants.js";
 import { isCollided } from "../../utils.js";
 
 export default class PotatoMines extends Plant {
+    static cost = 40;
     initPlantAnimation() {
         // Animation support variables
         this.startFrameX = 0;

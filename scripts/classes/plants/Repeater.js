@@ -3,6 +3,7 @@ import Projectile from "../projectiles/Projectile.js";
 import { CELL_WIDTH, peaShoot, RepeaterSprite } from "../../constants.js";
 
 export default class Repeater extends Plant {
+    static cost = 60;
     initPlantAnimation() {
         // Animation support variables
         this.startFrameX = 0;

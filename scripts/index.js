@@ -224,7 +224,11 @@ class Game {
             }
 
             //If the user has required number of sun then the plant is placed at the selected cell position
-            if (plantCost <= this.sunCounts) {
+
+            if (
+                this.plantsTypes[this.selectedPlant].blueprint.cost <=
+                this.sunCounts
+            ) {
                 this.plants.push(
                     new this.plantsTypes[this.selectedPlant].blueprint(
                         this,
@@ -424,6 +428,11 @@ class Game {
                     ? cardBoundary.w + 15
                     : cardBoundary.w,
                 idx === this.selectedPlant ? cardBoundary.h + 8 : cardBoundary.h
+            );
+            ctx.fillText(
+                plant.blueprint.cost,
+                cardBoundary.x + cardBoundary.w - 32,
+                cardBoundary.y + cardBoundary.h - 18
             );
 
             // Clicked plant is selected from the card

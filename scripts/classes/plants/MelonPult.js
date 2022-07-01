@@ -2,6 +2,7 @@ import Plant from "./Plant.js";
 import ParabolicProjectile from "../projectiles/ParabolicProjectile.js";
 
 export default class MelonPult extends Plant {
+    static cost = 50;
     attack() {
         if (this.attacking) {
             this.cooldown++;

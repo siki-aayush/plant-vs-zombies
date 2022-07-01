@@ -2,6 +2,7 @@ import Plant from "./Plant.js";
 import { CELL_WIDTH, chomp, ChomperSprite } from "../../constants.js";
 
 export default class Chomper extends Plant {
+    static cost = 50;
     initPlantAnimation() {
         // Animation support variables
         this.startFrameX = 0;

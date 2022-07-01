@@ -2,6 +2,7 @@ import { WallnutSprite } from "../../constants.js";
 import Plant from "./Plant.js";
 
 export default class WallNut extends Plant {
+    static cost = 60;
     constructor(game, x, y, w, h) {
         super(game, x, y, w, h);
         this.health = 500;

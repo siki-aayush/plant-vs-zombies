@@ -3,6 +3,7 @@ import { isCollided } from "../../utils.js";
 import { SpikeweedSprite } from "../../constants.js";
 
 export default class Spikeweed extends Plant {
+    static cost = 20;
     initPlantAnimation() {
         // Animation support variables
         this.startFrameX = 0;

@@ -3,6 +3,7 @@ import Sun from "../Sun.js";
 import { CELL_HEIGHT, peaShoot, SunflowerSprite } from "../../constants.js";
 
 export default class Sunflower extends Plant {
+    static cost = 25;
     initPlantAnimation() {
         // Animation support variables
         this.startFrameX = 0;

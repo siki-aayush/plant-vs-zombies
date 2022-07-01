@@ -3,6 +3,7 @@ import { CELL_WIDTH, peaShoot } from "../../constants.js";
 import Projectile from "../projectiles/Projectile.js";
 
 export default class PeaShooter extends Plant {
+    static cost = 25;
     attack() {
         if (this.game.frames % 100 === 0) {
             this.attackNow = true;

@@ -14,6 +14,7 @@ import { isCollided } from "../../utils.js";
 import Plant from "./Plant.js";
 
 export default class ThreePeaShooter extends Plant {
+    static cost = 150;
     // Initializes all the variables required for animation
     initPlantAnimation() {
         // Animation support variables

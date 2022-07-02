@@ -44,3 +44,30 @@ export const isCollided = (obj1, obj2) => {
         return true;
     }
 };
+
+// Asynchronously loads the image
+export const getImage = (path) => {
+    return new Promise((resolve, reject) => {
+        let img = new Image();
+        img.onload = () => {
+            console.log("image loaded");
+            resolve(img);
+        };
+        img.onerror = (e) => {
+            reject(e);
+        };
+        img.src = path;
+    });
+};
+
+// Asynchronously loads the audio
+export const getAudio = async (path) => {
+    let loadedAudio = await new Promise((resolve, reject) => {
+        let audio = new Audio();
+        audio.src = path;
+        audio.oncanplay = () => {
+            resolve(audio);
+        };
+    });
+    return loadedAudio;
+};

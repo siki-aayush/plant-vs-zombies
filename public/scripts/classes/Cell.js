@@ -19,10 +19,12 @@ export default class Cell {
 
     // Draws the cell on canvas
     draw() {
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(this.x, this.y, this.w, this.h);
+        // ctx.strokeStyle = "black";
+        // ctx.strokeRect(this.x, this.y, this.w, this.h);
         if (mouseStatus.x && mouseStatus.y && isCollided(this, mouseStatus)) {
+            ctx.globalAlpha = 0.3;
             ctx.fillRect(this.x, this.y, this.w, this.h);
+            ctx.globalAlpha = 1;
         }
     }
 }

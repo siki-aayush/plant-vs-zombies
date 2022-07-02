@@ -45,6 +45,9 @@ import {
     Button,
     theme,
     clickSound,
+    loadImages,
+    loading,
+    startMenuBtn,
 } from "./constants.js";
 
 class Game {
@@ -426,9 +429,10 @@ class Game {
     }
 
     // Creates an animation loop
-    animate = () => {
+    animate() {
         ctx.fillStyle = "black";
         // Draws the background image
+        console.log("background", bg);
         ctx.drawImage(bg, 0, 0, canvas.width + 573, canvas.height);
 
         // Draws the grid
@@ -459,9 +463,11 @@ class Game {
         // If the game is over it stops the animationFrame
         if (gameState.current !== gameState.gameOver) {
             // Continues the loop
-            this.animationId = window.requestAnimationFrame(this.animate);
+            this.animationId = window.requestAnimationFrame(
+                this.animate.bind(this)
+            );
         } else if (gameState.current === gameState.gameOver) {
-            // Game is set as over
+            // Game is set as over]
             ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
 
             // Shows the game end menu
@@ -491,7 +497,7 @@ class Game {
 
             //window.cancelAnimationFrame(this.animationId);
         }
-    };
+    }
 
     // Resets all the varibales to initial value for reset
     reset() {
@@ -530,6 +536,17 @@ class Game {
     }
 }
 
-// Creates a game object
-const game = new Game();
-game.init();
+const startGame = async () => {
+    // Load Images
+    await loadImages();
+
+    // Hide loading
+    loading.style.display = "none";
+    startMenuBtn.classList.remove("hide");
+
+    // Creates a game object
+    const game = new Game();
+    game.init();
+};
+
+startGame();

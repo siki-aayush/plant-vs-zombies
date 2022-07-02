@@ -34,7 +34,6 @@ export default class Sunflower extends Plant {
     }
 
     spwanSun() {
-        setInterval(() => {});
         if (this.frame % 2000 === 0) {
             this.game.suns.push(
                 new Sun(

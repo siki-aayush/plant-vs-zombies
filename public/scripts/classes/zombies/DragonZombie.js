@@ -33,6 +33,7 @@ export default class DragonZombie extends Zombie {
         this.offsetX = 200;
         this.offsety = 200;
     }
+    attackAnimation() {}
 
     loadSprite() {
         this.zombieType = DragonZombieSprite;

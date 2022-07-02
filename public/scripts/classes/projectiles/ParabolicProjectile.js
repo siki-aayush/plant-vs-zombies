@@ -27,7 +27,7 @@ export default class ParabolicProjectile extends Projectile {
                 this.targetDist = this.futureZombiePos - this.x;
                 this.speed = this.targetDist / this.futureTime;
                 this.d_theta = 180 / this.futureTime;
-            } else if (this.target.attacking === true) {
+            } else {
                 this.targetDist = this.target.x - this.x;
                 this.speed = this.targetDist / 20;
                 this.d_theta = 180 / 20;

@@ -23,6 +23,8 @@ export default class Spikeweed extends Plant {
         this.offsety = -75;
         this.offsetW = 20;
         this.offsetH = -50;
+
+        this.hit = false;
     }
 
     // Loads the sprite of the zombie
@@ -34,11 +36,15 @@ export default class Spikeweed extends Plant {
         this.game.zombies.forEach((zombie) => {
             if (isCollided(this, zombie)) {
                 zombie.health -= 0.12;
+                if (!this.hit) {
+                    zombie.hit = true;
+                    this.hit = true;
+
+                    setTimeout(() => {
+                        this.hit = false;
+                    }, 500);
+                }
             }
         });
     }
-
-    //attack() {
-    //    this.draw();
-    //}
 }

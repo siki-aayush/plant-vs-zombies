@@ -1,3 +1,4 @@
+import Cell from "./classes/Cell.js";
 import {
     canvas,
     CELL_HEIGHT,
@@ -7,7 +8,7 @@ import {
 } from "./constants.js";
 
 // Initializes the game grid
-export const initializeGrid = (Cell) => {
+export const initializeGrid = (game) => {
     let gridsList = [];
     for (
         let row = GRID_ROW_START_POS;
@@ -19,7 +20,7 @@ export const initializeGrid = (Cell) => {
             col < canvas.width - CELL_WIDTH * 2;
             col += CELL_WIDTH
         ) {
-            gridsList.push(new Cell(col, row, CELL_WIDTH, CELL_HEIGHT));
+            gridsList.push(new Cell(game, col, row, CELL_WIDTH, CELL_HEIGHT));
         }
     }
 

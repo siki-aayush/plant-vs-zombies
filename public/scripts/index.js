@@ -78,6 +78,7 @@ class Game {
         this.zombiesSpawnRate = 200;
         this.zombiesPositions = [];
         this.selectedPlant = 0;
+        this.selectedPlantHoverImg = undefined;
         this.frames = 1;
 
         this.zombiesTypes = [
@@ -179,7 +180,6 @@ class Game {
             clickSound.play();
             let cellPosX;
             let cellPosY;
-            let plantCost = 25;
 
             // Find the collided cell and extracts it's position
             this.grids.every((cell) => {
@@ -422,6 +422,10 @@ class Game {
             );
 
             // Clicked plant is selected from the card
+            if (isCollided(mouseStatus, cardBoundary)) {
+                canvas.style.cursor = "pointer";
+            }
+
             if (isCollided(mouseStatus, cardBoundary) && mouseStatus.clicked) {
                 this.selectedPlant = idx;
             }
@@ -431,12 +435,13 @@ class Game {
     // Creates an animation loop
     animate() {
         ctx.fillStyle = "black";
+        canvas.style.cursor = "default";
+
         // Draws the background image
-        console.log("background", bg);
         ctx.drawImage(bg, 0, 0, canvas.width + 573, canvas.height);
 
         // Draws the grid
-        //this.drawGrid();
+        this.drawGrid();
 
         // Manages the objects in the game
         this.manageAllPlants();
@@ -526,7 +531,7 @@ class Game {
         }
 
         // Initializes Grid
-        this.grids = initializeGrid(Cell);
+        this.grids = initializeGrid(this);
 
         // LawnCleaners
         this.initializeLawnCleaners();

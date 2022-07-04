@@ -79,6 +79,17 @@ export let PotatoMinesCard;
 export let WallNutCard;
 export let MelonPultCard;
 export let SpikeweedCard;
+
+// Shovel
+export let ShovelImg;
+export let ShovelBtn;
+
+// Extras
+export let sunImg;
+export let resourcescard;
+export let LawnCleanerImg;
+export let Button;
+
 // Audios
 export let introTheme = new Audio();
 export let theme = new Audio();
@@ -91,12 +102,6 @@ export let select = new Audio();
 export let peaShoot = new Audio();
 export let peaHit = new Audio();
 export let clickSound = new Audio();
-
-// Extras
-export let sunImg;
-export let resourcescard;
-export let LawnCleanerImg;
-export let Button;
 
 // Loads all the images
 export const loadImages = async () => {
@@ -177,6 +182,8 @@ export const loadImages = async () => {
         "../assets/images/Interface/LawnCleaner.png"
     );
     Button = await getImage("../assets/images/Interface/Button.png");
+    ShovelImg = await getImage("../assets/images/Interface/shovelIcon.png");
+    ShovelBtn = await getImage("../assets/images/Interface/shovelButton.png");
 
     select.src = "assets/audio/click.mp3";
     hoverSound.src = "assets/audio/hover.mp3";

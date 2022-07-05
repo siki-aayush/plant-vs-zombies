@@ -105,95 +105,115 @@ export let clickSound = new Audio();
 
 // Loads all the images
 export const loadImages = async () => {
-    normalBullet = await getImage("/assets/images/Plants/PB00.png");
-    melonBullet = await getImage("/assets/images/Plants/Melonpult_melon.webp");
-    FootballZombieSprite = await getImage(
-        "/assets/images/Zombies/FootballZombieSprite_300.png"
-    );
-    BucketHeadZombieSprite = await getImage(
-        "/assets/images/Zombies/BucketheadZombieSprite_166x144.png"
-    );
-    DragonZombieSprite = await getImage(
-        "/assets/images/Zombies/dragonZombie_464x400.png"
-    );
-    BallonZombieSprite = await getImage(
-        "/assets/images/Zombies/ballonZombieSprite_207x197.png"
-    );
-    NormalZombieSprite = await getImage(
-        "/assets/images/Zombies/ZombieSprite_166x144.png"
-    );
-    ConeHeadZombieSprite = await getImage(
-        "/assets/images/Zombies/ConeheadZombieSprite_166x144.png"
-    );
-    PeaShooterSprite = await getImage(
-        "/assets/images/Plants/PeashooterSprite_71x71.png"
-    );
-    ChomperSprite = await getImage(
-        "/assets/images/Plants/ChomperSprite_130x114.png"
-    );
+    try {
+        normalBullet = await getImage("/assets/images/Plants/PB00.png");
+        melonBullet = await getImage(
+            "/assets/images/Plants/Melonpult_melon.webp"
+        );
+        FootballZombieSprite = await getImage(
+            "/assets/images/Zombies/FootballZombieSprite_300.png"
+        );
+        BucketHeadZombieSprite = await getImage(
+            "/assets/images/Zombies/BucketheadZombieSprite_166x144.png"
+        );
+        DragonZombieSprite = await getImage(
+            "/assets/images/Zombies/dragonZombie_464x400.png"
+        );
+        BallonZombieSprite = await getImage(
+            "/assets/images/Zombies/ballonZombieSprite_207x197.png"
+        );
+        NormalZombieSprite = await getImage(
+            "/assets/images/Zombies/ZombieSprite_166x144.png"
+        );
+        ConeHeadZombieSprite = await getImage(
+            "/assets/images/Zombies/ConeheadZombieSprite_166x144.png"
+        );
+        PeaShooterSprite = await getImage(
+            "/assets/images/Plants/PeashooterSprite_71x71.png"
+        );
+        ChomperSprite = await getImage(
+            "/assets/images/Plants/ChomperSprite_130x114.png"
+        );
 
-    PotatoMineSprite = await getImage(
-        "/assets/images/Plants/PotatoMineSprite_132x93.png"
-    );
-    RepeaterSprite = await getImage(
-        "/assets/images/Plants/RepeaterSprite_73x71.png"
-    );
-    SpikeweedSprite = await getImage(
-        "/assets/images/Plants/SpikeweedSprite_100x41.png"
-    );
-    SunflowerSprite = await getImage(
-        "/assets/images/Plants/SunFlowerSprite_73x74.png"
-    );
-    ThreepeaShooterSprite = await getImage(
-        "/assets/images/Plants/ThreepeaterSprite_73x80.png"
-    );
-    WallnutSprite = await getImage(
-        "/assets/images/Plants/WallNutSprite_65x73.png"
-    );
-    MelonpultSprite = await getImage("/assets/images/Plants/melon_pult.png");
+        PotatoMineSprite = await getImage(
+            "/assets/images/Plants/PotatoMineSprite_132x93.png"
+        );
+        RepeaterSprite = await getImage(
+            "/assets/images/Plants/RepeaterSprite_73x71.png"
+        );
+        SpikeweedSprite = await getImage(
+            "/assets/images/Plants/SpikeweedSprite_100x41.png"
+        );
+        SunflowerSprite = await getImage(
+            "/assets/images/Plants/SunFlowerSprite_73x74.png"
+        );
+        ThreepeaShooterSprite = await getImage(
+            "/assets/images/Plants/ThreepeaterSprite_73x80.png"
+        );
+        WallnutSprite = await getImage(
+            "/assets/images/Plants/WallNutSprite_65x73.png"
+        );
+        MelonpultSprite = await getImage(
+            "/assets/images/Plants/melon_pult.png"
+        );
 
-    bg = await getImage("./assets/images/Interface/background1.jpg");
-    ThreePeaShooterCard = await getImage(
-        "../assets/images/Card/Plants/Threepeater.png"
-    );
-    PotatoMinesCard = await getImage(
-        "../assets/images/Card/Plants/PotatoMine.png"
-    );
+        bg = await getImage("./assets/images/Interface/background1.jpg");
+        ThreePeaShooterCard = await getImage(
+            "../assets/images/Card/Plants/Threepeater.png"
+        );
+        PotatoMinesCard = await getImage(
+            "../assets/images/Card/Plants/PotatoMine.png"
+        );
 
-    SunflowerCard = await getImage(
-        "../assets/images/Card/Plants/SunFlower.png"
-    );
-    PeaShooterCard = await getImage(
-        "../assets/images/Card/Plants/Peashooter.png"
-    );
-    RepeaterCard = await getImage("../assets/images/Card/Plants/Repeater.png");
-    ChomperCard = await getImage("../assets/images/Card/Plants/Chomper.png");
-    WallNutCard = await getImage("../assets/images/Card/Plants/WallNut.png");
-    SpikeweedCard = await getImage(
-        "../assets/images/Card/Plants/Spikeweed.png"
-    );
-    MelonPultCard = await getImage(
-        "../assets/images/Card/Plants/Melonpult_melon.webp"
-    );
+        SunflowerCard = await getImage(
+            "../assets/images/Card/Plants/SunFlower.png"
+        );
+        PeaShooterCard = await getImage(
+            "../assets/images/Card/Plants/Peashooter.png"
+        );
+        RepeaterCard = await getImage(
+            "../assets/images/Card/Plants/Repeater.png"
+        );
+        ChomperCard = await getImage(
+            "../assets/images/Card/Plants/Chomper.png"
+        );
+        WallNutCard = await getImage(
+            "../assets/images/Card/Plants/WallNut.png"
+        );
+        SpikeweedCard = await getImage(
+            "../assets/images/Card/Plants/Spikeweed.png"
+        );
+        MelonPultCard = await getImage(
+            "../assets/images/Card/Plants/Melonpult_melon.webp"
+        );
 
-    sunImg = await getImage("../assets/images/Interface/SunSprite_79x79.png");
-    resourcescard = await getImage("../assets/images/Interface/SunBack.png");
-    LawnCleanerImg = await getImage(
-        "../assets/images/Interface/LawnCleaner.png"
-    );
-    Button = await getImage("../assets/images/Interface/Button.png");
-    ShovelImg = await getImage("../assets/images/Interface/shovelIcon.png");
-    ShovelBtn = await getImage("../assets/images/Interface/shovelButton.png");
+        sunImg = await getImage(
+            "../assets/images/Interface/SunSprite_79x79.png"
+        );
+        resourcescard = await getImage(
+            "../assets/images/Interface/SunBack.png"
+        );
+        LawnCleanerImg = await getImage(
+            "../assets/images/Interface/LawnCleaner.png"
+        );
+        Button = await getImage("../assets/images/Interface/Button.png");
+        ShovelImg = await getImage("../assets/images/Interface/shovelIcon.png");
+        ShovelBtn = await getImage(
+            "../assets/images/Interface/shovelButton.png"
+        );
 
-    select.src = "assets/audio/click.mp3";
-    hoverSound.src = "assets/audio/hover.mp3";
-    plantation.src = "assets/audio/plantation.mp3";
-    peaShoot.src = "assets/audio/pea_shoot.mp3";
-    bucketZombieFall.src = "assets/audio/bucket_zombie_fall.mp3";
-    zombieFall.src = "assets/audio/zombie_fall.mp3";
-    introTheme.src = "assets/audio/introTheme.mp3";
-    theme.src = "assets/audio/theme.mp3";
-    chomp.src = "assets/audio/chomp.mp3";
-    peaHit.src = "assets/audio/pea_hit.mp3";
-    clickSound.src = "assets/audio/click.mp3";
+        select.src = "assets/audio/click.mp3";
+        hoverSound.src = "assets/audio/hover.mp3";
+        plantation.src = "assets/audio/plantation.mp3";
+        peaShoot.src = "assets/audio/pea_shoot.mp3";
+        bucketZombieFall.src = "assets/audio/bucket_zombie_fall.mp3";
+        zombieFall.src = "assets/audio/zombie_fall.mp3";
+        introTheme.src = "assets/audio/introTheme.mp3";
+        theme.src = "assets/audio/theme.mp3";
+        chomp.src = "assets/audio/chomp.mp3";
+        peaHit.src = "assets/audio/pea_hit.mp3";
+        clickSound.src = "assets/audio/click.mp3";
+    } catch (error) {
+        console.log("error ocurred while loading image", error);
+    }
 };

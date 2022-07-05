@@ -62,13 +62,15 @@ export const getImage = (path) => {
 };
 
 // Asynchronously loads the audio
-export const getAudio = async (path) => {
-    let loadedAudio = await new Promise((resolve, reject) => {
-        let audio = new Audio();
-        audio.src = path;
-        audio.oncanplay = () => {
-            resolve(audio);
-        };
-    });
-    return loadedAudio;
-};
+//export const getAudio = (path) => {
+//    return new Promise((resolve, reject) => {
+//        let audio = new Audio();
+//        audio.oncanplay = () => {
+//            resolve(audio);
+//        };
+//        audio.onerror = (error) => {
+//            reject(error);
+//        };
+//        audio.src = path;
+//    });
+//};

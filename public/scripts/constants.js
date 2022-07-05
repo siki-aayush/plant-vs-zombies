@@ -1,4 +1,4 @@
-import { getImage, getAudio } from "./utils.js";
+import { getImage } from "./utils.js";
 
 // Canvas constants
 export const canvas = document.querySelector("canvas");
@@ -83,6 +83,9 @@ export let SpikeweedCard;
 // Shovel
 export let ShovelImg;
 export let ShovelBtn;
+
+// Music icon
+export let musicImg;
 
 // Extras
 export let sunImg;
@@ -201,6 +204,8 @@ export const loadImages = async () => {
         ShovelBtn = await getImage(
             "../assets/images/Interface/shovelButton.png"
         );
+
+        musicImg = await getImage("../assets/images/Interface/music.png");
 
         select.src = "assets/audio/click.mp3";
         hoverSound.src = "assets/audio/hover.mp3";

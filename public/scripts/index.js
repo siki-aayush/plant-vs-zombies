@@ -49,6 +49,7 @@ import {
     startMenuBtn,
     ShovelBtn,
     ShovelImg,
+    musicImg,
 } from "./constants.js";
 
 class Game {
@@ -80,14 +81,24 @@ class Game {
         this.zombiesPositions = [];
         this.selectedPlant = 0;
         this.selectedPlantHoverImg = undefined;
-        this.shovelSelected = false;
         this.frames = 1;
 
+        // Booleans
+        this.shovelSelected = false;
+        this.music = true;
+
+        // Boundaries
         this.shovelBoundary = {
             x: 200,
             y: 15,
             w: 85,
             h: 85,
+        };
+        this.musicBoundary = {
+            x: canvas.width - 300,
+            y: 15,
+            w: 40,
+            h: 40,
         };
 
         this.zombiesTypes = [
@@ -247,6 +258,8 @@ class Game {
 
                 this.sunCounts -= CurrentPlant.cost;
             }
+
+            this.shovelSelected = false;
         });
     }
 
@@ -477,6 +490,32 @@ class Game {
         }
     }
 
+    // Manage the sound on and off function
+    manageMusic() {
+        // Toggles the sound status
+        if (
+            isCollided(mouseStatus, this.musicBoundary) &&
+            mouseStatus.clicked
+        ) {
+            this.music ? theme.pause() : theme.play();
+            this.music = !this.music;
+
+            // resets the mouse clicked status to false so that the
+            // button is clicked only once
+            mouseStatus.clicked = false;
+        }
+
+        // Draws the music icon
+        ctx.drawImage(musicImg, canvas.width - 300, 15, 40, 40);
+        if (!this.music) {
+            ctx.fillStyle = "black";
+            ctx.lineWidth = "4";
+            ctx.moveTo(canvas.width - 260, 13);
+            ctx.lineTo(canvas.width - 300, 55);
+            ctx.stroke();
+        }
+    }
+
     // Creates an animation loop
     animate() {
         ctx.fillStyle = "black";
@@ -504,6 +543,9 @@ class Game {
 
         // Manage the shovel
         this.manageShovel();
+
+        // Manage the music
+        this.manageMusic();
 
         // Increases frame by 1 on every loop (used as a timer)
         this.frames++;

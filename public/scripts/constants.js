@@ -194,7 +194,7 @@ export const loadImages = async () => {
             "../assets/images/Interface/SunBack.png"
         );
         LawnCleanerImg = await getImage(
-            "../assets/images/Interface/LawnCleaner.png"
+            "../assets/images/Interface/Lawn_mower.png"
         );
         Button = await getImage("../assets/images/Interface/Button.png");
         ShovelImg = await getImage("../assets/images/Interface/shovelIcon.png");

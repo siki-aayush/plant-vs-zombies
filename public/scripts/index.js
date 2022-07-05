@@ -15,7 +15,6 @@ import ConeHeadZombie from "./classes/zombies/ConeHeadZombie.js";
 import BallonZombie from "./classes/zombies/BallonZombie.js";
 import DragonZombie from "./classes/zombies/DragonZombie.js";
 
-import Cell from "./classes/Cell.js";
 import Sun from "./classes/Sun.js";
 import LawnCleaner from "./classes/LawnCleaner.js";
 import { initializeGrid, isCollided } from "./utils.js";
@@ -48,6 +47,8 @@ import {
     loadImages,
     loading,
     startMenuBtn,
+    ShovelBtn,
+    ShovelImg,
 } from "./constants.js";
 
 class Game {
@@ -79,7 +80,15 @@ class Game {
         this.zombiesPositions = [];
         this.selectedPlant = 0;
         this.selectedPlantHoverImg = undefined;
+        this.shovelSelected = false;
         this.frames = 1;
+
+        this.shovelBoundary = {
+            x: 200,
+            y: 15,
+            w: 85,
+            h: 85,
+        };
 
         this.zombiesTypes = [
             BallonZombie,
@@ -198,6 +207,13 @@ class Game {
                 cellPosX < GRID_COL_START_POS ||
                 cellPosY < GRID_ROW_START_POS
             ) {
+                // Unselect the shovel if selected
+                if (
+                    this.shovelSelected &&
+                    !isCollided(mouseStatus, this.shovelBoundary)
+                ) {
+                    this.shovelSelected = false;
+                }
                 return;
             }
 
@@ -207,14 +223,18 @@ class Game {
                     this.plants[i].x === cellPosX &&
                     this.plants[i].y === cellPosY
                 ) {
+                    // If the shovel is selected then remove the plant
+                    if (this.shovelSelected) {
+                        this.plants.splice(i, 1);
+                        this.shovelSelected = false;
+                    }
                     return;
                 }
             }
 
             //If the user has required number of sun then the plant is placed at the selected cell position
-
             let CurrentPlant = this.plantsTypes[this.selectedPlant].blueprint;
-            if (CurrentPlant.cost <= this.sunCounts) {
+            if (!this.shovelSelected && CurrentPlant.cost <= this.sunCounts) {
                 this.plants.push(
                     new CurrentPlant(
                         this,
@@ -415,6 +435,8 @@ class Game {
                     : cardBoundary.w,
                 idx === this.selectedPlant ? cardBoundary.h + 8 : cardBoundary.h
             );
+
+            // Adds the cost of the plant
             ctx.fillText(
                 plant.blueprint.cost,
                 cardBoundary.x + cardBoundary.w - 32,
@@ -424,12 +446,35 @@ class Game {
             // Clicked plant is selected from the card
             if (isCollided(mouseStatus, cardBoundary)) {
                 canvas.style.cursor = "pointer";
-            }
-
-            if (isCollided(mouseStatus, cardBoundary) && mouseStatus.clicked) {
-                this.selectedPlant = idx;
+                if (mouseStatus.clicked) {
+                    this.selectedPlant = idx;
+                }
             }
         });
+    }
+
+    manageShovel() {
+        // Selects the shovel when clicked on the shovel button
+        if (
+            isCollided(mouseStatus, this.shovelBoundary) &&
+            mouseStatus.clicked
+        ) {
+            this.shovelSelected = true;
+        }
+
+        // Draws the shovel button if the shovel is not selected else
+        // the shovel is drawn where the mouse position is
+        if (!this.shovelSelected) {
+            ctx.drawImage(ShovelBtn, 200, 15, 85, 85);
+        } else {
+            ctx.drawImage(
+                ShovelImg,
+                mouseStatus.x - this.shovelBoundary.w / 2,
+                mouseStatus.y - this.shovelBoundary.h / 2,
+                this.shovelBoundary.w,
+                this.shovelBoundary.h
+            );
+        }
     }
 
     // Creates an animation loop
@@ -456,6 +501,9 @@ class Game {
 
         // Displays the cards
         this.showCards();
+
+        // Manage the shovel
+        this.manageShovel();
 
         // Increases frame by 1 on every loop (used as a timer)
         this.frames++;

@@ -43,7 +43,12 @@ export default class Cell {
             }
         }
 
-        if (mouseStatus.x && mouseStatus.y && isCollided(this, mouseStatus)) {
+        if (
+            !this.game.shovelSelected &&
+            mouseStatus.x &&
+            mouseStatus.y &&
+            isCollided(this, mouseStatus)
+        ) {
             // Gets the class of the selected plant
             let selectedPlant =
                 this.game.plantsTypes[this.game.selectedPlant].blueprint;

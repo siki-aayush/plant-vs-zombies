@@ -50,6 +50,7 @@ import {
     ShovelBtn,
     ShovelImg,
     musicImg,
+    volumeImg,
 } from "./constants.js";
 
 class Game {
@@ -86,6 +87,7 @@ class Game {
         // Booleans
         this.shovelSelected = false;
         this.music = true;
+        this.volume = true;
 
         // Boundaries
         this.shovelBoundary = {
@@ -96,6 +98,13 @@ class Game {
         };
         this.musicBoundary = {
             x: canvas.width - 300,
+            y: 15,
+            w: 40,
+            h: 40,
+        };
+
+        this.volumeBoudnary = {
+            x: canvas.width - 350,
             y: 15,
             w: 40,
             h: 40,
@@ -196,71 +205,74 @@ class Game {
         });
 
         // Adds click listener on canvas
-        canvas.addEventListener("click", () => {
-            clickSound.play();
-            let cellPosX;
-            let cellPosY;
+        canvas.addEventListener("click", this.onClick.bind(this));
+    }
 
-            // Find the collided cell and extracts it's position
-            this.grids.every((cell) => {
-                if (isCollided(cell, mouseStatus)) {
-                    cellPosX = cell.x + CELL_PAD;
-                    cellPosY = cell.y + CELL_PAD;
-                    return false; // Stops the loop
-                }
-                return true; // Continues iterating through the loop
-            });
+    // Functions to do on click event
+    onClick(e) {
+        this.volume && clickSound.play();
+        let cellPosX;
+        let cellPosY;
 
-            // Stops from placing the plants outside of the grid
+        // Find the collided cell and extracts it's position
+        this.grids.every((cell) => {
+            if (isCollided(cell, mouseStatus)) {
+                cellPosX = cell.x + CELL_PAD;
+                cellPosY = cell.y + CELL_PAD;
+                return false; // Stops the loop
+            }
+            return true; // Continues iterating through the loop
+        });
+
+        // Stops from placing the plants outside of the grid
+        if (
+            cellPosX === undefined ||
+            cellPosY === undefined ||
+            cellPosX < GRID_COL_START_POS ||
+            cellPosY < GRID_ROW_START_POS
+        ) {
+            // Unselect the shovel if selected
             if (
-                cellPosX === undefined ||
-                cellPosY === undefined ||
-                cellPosX < GRID_COL_START_POS ||
-                cellPosY < GRID_ROW_START_POS
+                this.shovelSelected &&
+                !isCollided(mouseStatus, this.shovelBoundary)
             ) {
-                // Unselect the shovel if selected
-                if (
-                    this.shovelSelected &&
-                    !isCollided(mouseStatus, this.shovelBoundary)
-                ) {
+                this.shovelSelected = false;
+            }
+            return;
+        }
+
+        // Checks whether there is already a plant in selected cell
+        for (let i = 0; i < this.plants.length; i++) {
+            if (
+                this.plants[i].x === cellPosX &&
+                this.plants[i].y === cellPosY
+            ) {
+                // If the shovel is selected then remove the plant
+                if (this.shovelSelected) {
+                    this.plants.splice(i, 1);
                     this.shovelSelected = false;
                 }
                 return;
             }
+        }
 
-            // Checks whether there is already a plant in selected cell
-            for (let i = 0; i < this.plants.length; i++) {
-                if (
-                    this.plants[i].x === cellPosX &&
-                    this.plants[i].y === cellPosY
-                ) {
-                    // If the shovel is selected then remove the plant
-                    if (this.shovelSelected) {
-                        this.plants.splice(i, 1);
-                        this.shovelSelected = false;
-                    }
-                    return;
-                }
-            }
+        //If the user has required number of sun then the plant is placed at the selected cell position
+        let CurrentPlant = this.plantsTypes[this.selectedPlant].blueprint;
+        if (!this.shovelSelected && CurrentPlant.cost <= this.sunCounts) {
+            this.plants.push(
+                new CurrentPlant(
+                    this,
+                    cellPosX,
+                    cellPosY,
+                    CELL_WIDTH - 25,
+                    CELL_HEIGHT - 25
+                )
+            );
 
-            //If the user has required number of sun then the plant is placed at the selected cell position
-            let CurrentPlant = this.plantsTypes[this.selectedPlant].blueprint;
-            if (!this.shovelSelected && CurrentPlant.cost <= this.sunCounts) {
-                this.plants.push(
-                    new CurrentPlant(
-                        this,
-                        cellPosX,
-                        cellPosY,
-                        CELL_WIDTH - 25,
-                        CELL_HEIGHT - 25
-                    )
-                );
+            this.sunCounts -= CurrentPlant.cost;
+        }
 
-                this.sunCounts -= CurrentPlant.cost;
-            }
-
-            this.shovelSelected = false;
-        });
+        this.shovelSelected = false;
     }
 
     // Initializes the lawn cleaners
@@ -490,9 +502,47 @@ class Game {
         }
     }
 
-    // Manage the sound on and off function
+    //manages Sound
+
+    manageVolume() {
+        if (
+            isCollided(mouseStatus, this.volumeBoudnary) &&
+            mouseStatus.clicked
+        ) {
+            console.log("volume btn clicked");
+            this.volume = !this.volume;
+            mouseStatus.clicked = false;
+        }
+
+        // Draws the volume icon
+        ctx.drawImage(
+            volumeImg,
+            this.volumeBoudnary.x,
+            this.volumeBoudnary.y,
+            this.volumeBoudnary.w,
+            this.volumeBoudnary.h
+        );
+
+        if (!this.volume) {
+            console.log("inside not volume", this.volume);
+            ctx.fillStyle = "black";
+            ctx.lineWidth = "4";
+            ctx.beginPath();
+            ctx.moveTo(
+                this.volumeBoudnary.x + this.volumeBoudnary.w,
+                this.volumeBoudnary.y
+            );
+            ctx.lineTo(
+                this.volumeBoudnary.x,
+                this.volumeBoudnary.y + this.volumeBoudnary.h
+            );
+            ctx.stroke();
+        }
+    }
+
+    // Manage the music on and off function
     manageMusic() {
-        // Toggles the sound status
+        // Toggles the music status
         if (
             isCollided(mouseStatus, this.musicBoundary) &&
             mouseStatus.clicked
@@ -506,12 +556,25 @@ class Game {
         }
 
         // Draws the music icon
-        ctx.drawImage(musicImg, canvas.width - 300, 15, 40, 40);
+        ctx.drawImage(
+            musicImg,
+            this.musicBoundary.x,
+            this.musicBoundary.y,
+            this.musicBoundary.w,
+            this.musicBoundary.h
+        );
         if (!this.music) {
             ctx.fillStyle = "black";
             ctx.lineWidth = "4";
-            ctx.moveTo(canvas.width - 260, 13);
-            ctx.lineTo(canvas.width - 300, 55);
+            ctx.beginPath();
+            ctx.moveTo(
+                this.musicBoundary.x + this.musicBoundary.w,
+                this.musicBoundary.y
+            );
+            ctx.lineTo(
+                this.musicBoundary.x,
+                this.musicBoundary.y + this.musicBoundary.h
+            );
             ctx.stroke();
         }
     }
@@ -546,6 +609,9 @@ class Game {
 
         // Manage the music
         this.manageMusic();
+
+        // Manage volume
+        this.manageVolume();
 
         // Increases frame by 1 on every loop (used as a timer)
         this.frames++;

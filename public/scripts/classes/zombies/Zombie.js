@@ -170,7 +170,7 @@ export default class Zombie {
         }
 
         if (this.die) {
-            zombieFall.play();
+            this.game.volume && zombieFall.play();
             this.dieAnimation();
             this.checkFrames();
             this.removeZombies();

@@ -53,7 +53,7 @@ export default class ThreePeaShooter extends Plant {
             this.frameY === 1
         ) {
             this.attackNow = false;
-            peaShoot.play();
+            this.game.volume && peaShoot.play();
             // Middle projectile
             this.game.projectiles.push(
                 new Projectile(

@@ -45,7 +45,7 @@ export default class Repeater extends Plant {
         ) {
             this.attackNow = false;
 
-            peaShoot.play();
+            this.game.volume && peaShoot.play();
             this.game.projectiles.push(
                 new Projectile(
                     this.game,
@@ -56,7 +56,7 @@ export default class Repeater extends Plant {
                 )
             );
 
-            peaShoot.play();
+            this.game.volume && peaShoot.play();
             this.game.projectiles.push(
                 new Projectile(
                     this.game,

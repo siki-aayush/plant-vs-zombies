@@ -39,7 +39,7 @@ export default class Projectile {
     checkCollision() {
         this.game.zombies.every((zombie) => {
             if (isCollided(this, zombie)) {
-                peaHit.play();
+                this.game.volume && peaHit.play();
                 zombie.health -= this.damage;
                 zombie.hit = true;
                 this.delete = true;

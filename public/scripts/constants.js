@@ -84,8 +84,11 @@ export let SpikeweedCard;
 export let ShovelImg;
 export let ShovelBtn;
 
-// Music icon
+// Music icons
 export let musicImg;
+
+// Sound icons
+export let volumeImg;
 
 // Extras
 export let sunImg;
@@ -206,6 +209,7 @@ export const loadImages = async () => {
         );
 
         musicImg = await getImage("../assets/images/Interface/music.png");
+        volumeImg = await getImage("../assets/images/Interface/volume.png");
 
         select.src = "assets/audio/click.mp3";
         hoverSound.src = "assets/audio/hover.mp3";

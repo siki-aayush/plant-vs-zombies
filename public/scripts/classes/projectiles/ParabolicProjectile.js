@@ -58,7 +58,7 @@ export default class ParabolicProjectile extends Projectile {
     checkCollision() {
         this.game.zombies.every((zombie) => {
             if (this.temp === zombie.y && isCollided(this, zombie)) {
-                peaHit.play();
+                this.game.volume && peaHit.play();
                 zombie.health -= this.damage;
                 zombie.hit = true;
                 this.delete = true;

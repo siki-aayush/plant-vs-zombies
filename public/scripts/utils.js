@@ -7,7 +7,11 @@ import {
     GRID_COL_START_POS,
 } from "./constants.js";
 
-// Initializes the game grid
+/**
+ * initializeGrid.
+ * Initializes the game grid
+ * @param {Game} game
+ */
 export const initializeGrid = (game) => {
     let gridsList = [];
     for (
@@ -29,6 +33,8 @@ export const initializeGrid = (game) => {
 
 /**
  * isCollided.
+ * Box collision
+ * Checks whether the two box is collided.
  * @param {Object} obj1
  * @param {Object} obj2
  * @returns {Boolean}
@@ -46,7 +52,46 @@ export const isCollided = (obj1, obj2) => {
     }
 };
 
-// Asynchronously loads the image
+/**
+ * getHighScore
+ * Gets the all time highscore from the server
+ */
+export const getHighScore = async () => {
+    console.log("testing request");
+    let highscore;
+    try {
+        let data = await fetch("http://localhost:3000/highscore");
+        let parsedData = await data.json();
+        highscore = parsedData.highscore;
+    } catch (error) {
+        highscore = 999;
+    }
+    return highscore;
+};
+
+/**
+ * setHighScore.
+ * Sets the score as the high score if the score is greater than the high score
+ * The highscore checking is done in the backend
+ * @param {number} score
+ */
+export const setHighScore = async (score) => {
+    try {
+        fetch("http://localhost:3000/highscore", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ score: score }),
+        });
+    } catch (error) {
+        console.log("error", error);
+    }
+};
+
+/**
+ * getImage.
+ * Asynchronously loads the image
+ * @param {string} path
+ */
 export const getImage = (path) => {
     return new Promise((resolve, reject) => {
         let img = new Image();

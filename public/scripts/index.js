@@ -17,7 +17,12 @@ import DragonZombie from "./classes/zombies/DragonZombie.js";
 
 import Sun from "./classes/Sun.js";
 import LawnCleaner from "./classes/LawnCleaner.js";
-import { initializeGrid, isCollided } from "./utils.js";
+import {
+    getHighScore,
+    setHighScore,
+    initializeGrid,
+    isCollided,
+} from "./utils.js";
 
 import {
     canvas,
@@ -174,7 +179,7 @@ class Game {
             this.animate();
         });
 
-        //
+        // Adds the start button listener
         this.endMenu.addEventListener("click", () => {
             this.endMenu.classList.add("hide");
             this.reset();
@@ -351,7 +356,6 @@ class Game {
                     CELL_HEIGHT
                 )
             );
-
             this.zombiesPositions.push(selectedRow);
 
             // Decreases the zombie spawn rate gradually until it finally reaches 300
@@ -502,8 +506,7 @@ class Game {
         }
     }
 
-    //manages Sound
-
+    // Manages Sound
     manageVolume() {
         if (
             isCollided(mouseStatus, this.volumeBoudnary) &&
@@ -577,19 +580,6 @@ class Game {
         }
     }
 
-    setHighScore() {
-        console.log("this.score = ", this.score);
-        try {
-            fetch("http://localhost:3000/highscore", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ score: this.score }),
-            });
-        } catch (error) {
-            console.log("error", error);
-        }
-    }
-
     // Creates an animation loop
     animate() {
         ctx.fillStyle = "black";
@@ -646,7 +636,7 @@ class Game {
             this.endMenu.classList.remove("hide");
 
             // Posts the highscore value on the backend
-            this.setHighScore();
+            setHighScore(this.score);
 
             // Shows the score on the dom
             this.endScore.innerHTML = `Score: ${this.score}`;
@@ -679,13 +669,7 @@ class Game {
     // Initializes grids
     async init() {
         // Fetches data from the server
-        try {
-            let data = await fetch("http://localhost:3000/highscore");
-            let parsedData = await data.json();
-            this.highScore = parsedData.highscore;
-        } catch (error) {
-            this.highscore = 999;
-        }
+        this.highScore = await getHighScore();
 
         // Initializes Grid
         this.grids = initializeGrid(this);

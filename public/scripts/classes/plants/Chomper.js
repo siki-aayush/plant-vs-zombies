@@ -70,8 +70,8 @@ export default class Chomper extends Plant {
                     this.frameX = 9;
                     this.frameY = 3;
 
-                    // Eat the zombie
-                    chomp.play();
+                    // Eat the zombik
+                    this.game.volume && chomp.play();
                     zombie.delete = true;
                     this.game.score += 10;
 

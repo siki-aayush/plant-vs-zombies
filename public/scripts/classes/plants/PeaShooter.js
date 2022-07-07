@@ -15,7 +15,7 @@ export default class PeaShooter extends Plant {
             this.frameY === 1
         ) {
             this.attackNow = false;
-            peaShoot.play();
+            this.game.volume && peaShoot.play();
             this.game.projectiles.push(
                 new Projectile(
                     this.game,

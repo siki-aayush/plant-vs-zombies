@@ -209,7 +209,7 @@ class Game {
     }
 
     // Functions to do on click event
-    onClick(e) {
+    onClick() {
         this.volume && clickSound.play();
         let cellPosX;
         let cellPosY;
@@ -509,7 +509,6 @@ class Game {
             isCollided(mouseStatus, this.volumeBoudnary) &&
             mouseStatus.clicked
         ) {
-            console.log("volume btn clicked");
             this.volume = !this.volume;
             mouseStatus.clicked = false;
         }
@@ -524,7 +523,6 @@ class Game {
         );
 
         if (!this.volume) {
-            console.log("inside not volume", this.volume);
             ctx.fillStyle = "black";
             ctx.lineWidth = "4";
             ctx.beginPath();
@@ -576,6 +574,19 @@ class Game {
                 this.musicBoundary.y + this.musicBoundary.h
             );
             ctx.stroke();
+        }
+    }
+
+    setHighScore() {
+        console.log("this.score = ", this.score);
+        try {
+            fetch("http://localhost:3000/highscore", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ score: this.score }),
+            });
+        } catch (error) {
+            console.log("error", error);
         }
     }
 
@@ -635,15 +646,7 @@ class Game {
             this.endMenu.classList.remove("hide");
 
             // Posts the highscore value on the backend
-            try {
-                fetch("http://localhost:3000/highscore", {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ score: this.score }),
-                });
-            } catch (error) {
-                console.log("error", error);
-            }
+            this.setHighScore();
 
             // Shows the score on the dom
             this.endScore.innerHTML = `Score: ${this.score}`;
@@ -653,10 +656,6 @@ class Game {
                 this.score >= this.highScore
                     ? `High Score: ${this.score}`
                     : `High Score: ${this.highScore}`;
-
-            console.log("testing");
-
-            //window.cancelAnimationFrame(this.animationId);
         }
     }
 
@@ -671,8 +670,10 @@ class Game {
 
         this.frames = 1;
         this.score = 0;
+        this.sunCounts = 125;
 
         gameState.current = gameState.gamePlaying;
+        window.cancelAnimationFrame(this.animationId);
     }
 
     // Initializes grids

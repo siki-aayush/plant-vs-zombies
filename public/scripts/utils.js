@@ -7,7 +7,7 @@ import {
     GRID_COL_START_POS,
 } from "./constants.js";
 
-const URL = "http://localhost:3000/highscore";
+const URL = "https://plant-vs-zombies.vercel.app/";
 /**
  * initializeGrid.
  * Initializes the game grid

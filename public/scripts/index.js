@@ -17,7 +17,12 @@ import DragonZombie from "./classes/zombies/DragonZombie.js";
 
 import Sun from "./classes/Sun.js";
 import LawnCleaner from "./classes/LawnCleaner.js";
-import { initializeGrid, isCollided } from "./utils.js";
+import {
+    getHighScore,
+    setHighScore,
+    initializeGrid,
+    isCollided,
+} from "./utils.js";
 
 import {
     canvas,
@@ -174,7 +179,7 @@ class Game {
             this.animate();
         });
 
-        //
+        // Adds the start button listener
         this.endMenu.addEventListener("click", () => {
             this.endMenu.classList.add("hide");
             this.reset();
@@ -209,7 +214,7 @@ class Game {
     }
 
     // Functions to do on click event
-    onClick(e) {
+    onClick() {
         this.volume && clickSound.play();
         let cellPosX;
         let cellPosY;
@@ -351,7 +356,6 @@ class Game {
                     CELL_HEIGHT
                 )
             );
-
             this.zombiesPositions.push(selectedRow);
 
             // Decreases the zombie spawn rate gradually until it finally reaches 300
@@ -502,14 +506,12 @@ class Game {
         }
     }
 
-    //manages Sound
-
+    // Manages Sound
     manageVolume() {
         if (
             isCollided(mouseStatus, this.volumeBoudnary) &&
             mouseStatus.clicked
         ) {
-            console.log("volume btn clicked");
             this.volume = !this.volume;
             mouseStatus.clicked = false;
         }
@@ -524,7 +526,6 @@ class Game {
         );
 
         if (!this.volume) {
-            console.log("inside not volume", this.volume);
             ctx.fillStyle = "black";
             ctx.lineWidth = "4";
             ctx.beginPath();
@@ -635,15 +636,7 @@ class Game {
             this.endMenu.classList.remove("hide");
 
             // Posts the highscore value on the backend
-            try {
-                fetch("http://localhost:3000/highscore", {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ score: this.score }),
-                });
-            } catch (error) {
-                console.log("error", error);
-            }
+            setHighScore(this.score);
 
             // Shows the score on the dom
             this.endScore.innerHTML = `Score: ${this.score}`;
@@ -653,10 +646,6 @@ class Game {
                 this.score >= this.highScore
                     ? `High Score: ${this.score}`
                     : `High Score: ${this.highScore}`;
-
-            console.log("testing");
-
-            //window.cancelAnimationFrame(this.animationId);
         }
     }
 
@@ -671,20 +660,16 @@ class Game {
 
         this.frames = 1;
         this.score = 0;
+        this.sunCounts = 125;
 
         gameState.current = gameState.gamePlaying;
+        window.cancelAnimationFrame(this.animationId);
     }
 
     // Initializes grids
     async init() {
         // Fetches data from the server
-        try {
-            let data = await fetch("http://localhost:3000/highscore");
-            let parsedData = await data.json();
-            this.highScore = parsedData.highscore;
-        } catch (error) {
-            this.highscore = 999;
-        }
+        this.highScore = await getHighScore();
 
         // Initializes Grid
         this.grids = initializeGrid(this);

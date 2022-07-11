@@ -85,6 +85,7 @@ class Game {
         this.sunCounts = 200;
         this.zombiesSpawnRate = 200;
         this.zombiesPositions = [];
+        this.plantCooldownTime = 5000; // In millisecond
         this.selectedPlant = 0;
         this.selectedPlantHoverImg = undefined;
         this.frames = 1;
@@ -128,38 +129,47 @@ class Game {
             {
                 card: SunflowerCard,
                 blueprint: Sunflower,
+                canPlant: true,
             },
             {
                 card: PeaShooterCard,
                 blueprint: PeaShooter,
+                canPlant: true,
             },
             {
                 card: RepeaterCard,
                 blueprint: Repeater,
+                canPlant: true,
             },
             {
                 card: ThreePeaShooterCard,
                 blueprint: ThreePeaShooter,
+                canPlant: true,
             },
             {
                 card: ChomperCard,
                 blueprint: Chomper,
+                canPlant: true,
             },
             {
                 card: WallNutCard,
                 blueprint: WallNut,
+                canPlant: true,
             },
             {
                 card: PotatoMinesCard,
                 blueprint: PotatoMines,
+                canPlant: true,
             },
             {
                 card: SpikeweedCard,
                 blueprint: Spikeweed,
+                canPlant: true,
             },
             {
                 card: MelonPultCard,
                 blueprint: MelonPult,
+                canPlant: true,
             },
         ];
     }
@@ -262,10 +272,14 @@ class Game {
         }
 
         //If the user has required number of sun then the plant is placed at the selected cell position
-        let CurrentPlant = this.plantsTypes[this.selectedPlant].blueprint;
-        if (!this.shovelSelected && CurrentPlant.cost <= this.sunCounts) {
+        let CurrentPlant = this.plantsTypes[this.selectedPlant];
+        if (
+            !this.shovelSelected &&
+            CurrentPlant.canPlant &&
+            CurrentPlant.blueprint.cost <= this.sunCounts
+        ) {
             this.plants.push(
-                new CurrentPlant(
+                new CurrentPlant.blueprint(
                     this,
                     cellPosX,
                     cellPosY,
@@ -274,7 +288,14 @@ class Game {
                 )
             );
 
-            this.sunCounts -= CurrentPlant.cost;
+            // Subtract the cost of the plant from the sun count
+            this.sunCounts -= CurrentPlant.blueprint.cost;
+
+            // Make the plant cannot be placed again until the cooldown time
+            CurrentPlant.canPlant = false;
+            setTimeout(() => {
+                CurrentPlant.canPlant = true;
+            }, this.plantCooldownTime);
         }
 
         this.shovelSelected = false;
@@ -444,7 +465,7 @@ class Game {
                 x: 20,
                 y: GRID_ROW_START_POS + 80 * idx,
                 w: 100,
-                h: 60,
+                h: 59,
             };
 
             // Sets the y position of the card
@@ -454,7 +475,7 @@ class Game {
             ctx.drawImage(
                 plant.card,
                 0,
-                0,
+                plant.canPlant ? 1 : 61,
                 cardBoundary.w,
                 cardBoundary.h,
                 cardBoundary.x,
@@ -629,6 +650,9 @@ class Game {
                 this.animate.bind(this)
             );
         } else if (gameState.current === gameState.gameOver) {
+            // Pause the sound
+            theme.pause();
+
             // Game is set as over]
             ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
 
@@ -662,6 +686,9 @@ class Game {
         this.score = 0;
         this.sunCounts = 125;
 
+        console.log("music is ", this.music);
+        console.log("theme is ", theme);
+        this.music ? theme.play() : theme.pause();
         gameState.current = gameState.gamePlaying;
         window.cancelAnimationFrame(this.animationId);
     }
@@ -675,7 +702,7 @@ class Game {
         this.grids = initializeGrid(this);
 
         // LawnCleaners
-        this.initializeLawnCleaners();
+        // this.initializeLawnCleaners();
 
         // Add listeners
         this.adddListeners();

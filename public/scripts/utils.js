@@ -7,6 +7,7 @@ import {
     GRID_COL_START_POS,
 } from "./constants.js";
 
+const URL = "http://localhost:3000/highscore";
 /**
  * initializeGrid.
  * Initializes the game grid
@@ -60,7 +61,7 @@ export const getHighScore = async () => {
     console.log("testing request");
     let highscore;
     try {
-        let data = await fetch("http://localhost:3000/highscore");
+        let data = await fetch(URL);
         let parsedData = await data.json();
         highscore = parsedData.highscore;
     } catch (error) {
@@ -77,7 +78,7 @@ export const getHighScore = async () => {
  */
 export const setHighScore = async (score) => {
     try {
-        fetch("http://localhost:3000/highscore", {
+        fetch(URL, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ score: score }),

@@ -4,6 +4,7 @@
     "main": "index.js",
     "repository": "git@github.com:siki-aayush/plant-vs-zombies.git",
     "author": "siki <musyajuaayush@gmail.com>",
+    "type": "module",
     "license": "MIT",
     "scripts": {
         "start": "node index.js"

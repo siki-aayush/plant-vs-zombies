@@ -184,3 +184,5 @@ tags
 # Ignore code-workspaces
 *.code-workspace
 
+# Data files
+data/

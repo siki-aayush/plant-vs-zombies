@@ -38,8 +38,10 @@ export default class BallonZombie extends Zombie {
         this.animationSpeed = 4;
 
         // Offset for drawing mage
-        this.offsetX = 90;
-        this.offsety = 90;
+        this.offsetX = -90;
+        this.offsetY = -90;
+        this.offsetW = 90;
+        this.offsetH = 90;
     }
 
     dieAnimation() {

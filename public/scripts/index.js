@@ -475,7 +475,7 @@ class Game {
             ctx.drawImage(
                 plant.card,
                 0,
-                plant.canPlant ? 1 : 61,
+                plant.canPlant || idx === 8 ? 1 : 61,
                 cardBoundary.w,
                 cardBoundary.h,
                 cardBoundary.x,
@@ -702,7 +702,7 @@ class Game {
         this.grids = initializeGrid(this);
 
         // LawnCleaners
-        // this.initializeLawnCleaners();
+        this.initializeLawnCleaners();
 
         // Add listeners
         this.adddListeners();

@@ -34,8 +34,10 @@ export default class NormalZombie extends Zombie {
         this.animationSpeed = 4;
 
         // Offset for drawing mage
-        this.offsetX = 70;
-        this.offsety = 70;
+        this.offsetX = -70;
+        this.offsetY = -70;
+        this.offsetW = 70;
+        this.offsetH = 70;
     }
 
     attackAnimation() {

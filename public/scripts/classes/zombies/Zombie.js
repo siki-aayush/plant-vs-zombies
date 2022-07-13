@@ -62,8 +62,10 @@ export default class Zombie {
         this.animationSpeed = 2;
 
         // Offset for drawing image
-        this.offsetX = 70;
-        this.offsety = 70;
+        this.offsetX = -70;
+        this.offsetY = -70;
+        this.offsetW = 70;
+        this.offsetH = 70;
     }
 
     // Loads the sprite of the zombie
@@ -73,6 +75,7 @@ export default class Zombie {
 
     // Draws the zombie
     draw() {
+        console.log("drawing");
         // If hit decreases the opacity
         if (this.hit) {
             ctx.globalAlpha = 0.6;
@@ -83,10 +86,10 @@ export default class Zombie {
             this.frameY * this.spriteH,
             this.spriteW,
             this.spriteH,
-            this.x - this.offsetX,
-            this.y - this.offsety,
-            this.w + this.offsetX,
-            this.h + this.offsety
+            this.x + this.offsetX,
+            this.y + this.offsetY,
+            this.w + this.offsetW,
+            this.h + this.offsetH
         );
 
         // Resets the opacity after 100 ms

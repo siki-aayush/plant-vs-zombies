@@ -1,8 +1,8 @@
-import fs from "fs";
-import express from "express";
 import cors from "cors";
+import express from "express";
+import fs from "fs";
 
-const app = express();
+const app = newFunction();
 
 const getHscore = () => {
     if (!fs.existsSync("data")) {
@@ -55,3 +55,6 @@ app.get("/", (_req, res) => {
 app.listen(3000, () => {
     console.log("Application listening on port 3000!");
 });
+function newFunction() {
+    return express();
+}
